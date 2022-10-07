@@ -2,13 +2,20 @@
 
 Once you have a business application to support you can then start to use Incident management and other features and link your application to them.
 
+Table of Contents
+- [Incident Management](#incident-management)
+  - [Creating an Incident](#creating-an-incident)
+  - [Updating Incidents](#updating-incidents)
+    - [Changing the status](#changing-the-status)
+  - [Completing the Incident](#completing-the-incident)
+
 ## Creating an Incident
 
 From the left navigation menu under **Self-Service** you should see **Incidents**.  If you cannot see it then type **Incidents** into the **Filter navigator** text box and click on **Incidents** under **Self-Service**.
 
 A new incident can be created as follows:
 
-* Click the **NeW** button at the top of the main area.
+* Click the **New** button at the top of the main area.
 * You will receive a new **INC** number.
 * The **Caller** will be set to you the logged in user.  You could always select a different user to make it more interesting.
 * Change the **Urgency** to the incident you are implementing.
