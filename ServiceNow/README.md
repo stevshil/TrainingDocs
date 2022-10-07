@@ -107,3 +107,4 @@ Your user can now log in and use the system.  You'll need to give them the URL t
 Listed below are further guides to help work with the basics of service now.
 
 * [Creating A Business Application](CreatingABusinessApplication.md)
+* [Incident Management](IncidentManagement.md)
