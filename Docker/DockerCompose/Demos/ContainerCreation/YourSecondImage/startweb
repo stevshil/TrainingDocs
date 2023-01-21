@@ -1,0 +1,10 @@
+#!/bin/bash
+
+unset HTTPD_PREFIX HTTPD_SHA256 HTTPD_VERSION
+
+/usr/sbin/apache2ctl start
+# To prevent apache2ctl from ending
+while :
+do
+        sleep 60
+done
