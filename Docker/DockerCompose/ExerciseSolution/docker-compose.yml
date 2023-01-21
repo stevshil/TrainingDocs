@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  pcdb:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    image: pcdb:1.0
+    volumes:
+      - "pcdata:/var/lib/mysql"
+    environment:
+      MARIADB_ROOT_PASSWORD: petclinic
+  pcapp:
+    build:
+      context: .
+      dockerfile: Dockerfile.pc
+    image: petclinic:1.0
+    ports:
+      - 8085:8080
+volumes:
+  pcdata:

@@ -1,0 +1,18 @@
+FROM maven:3.8.7-openjdk-18 AS compile
+RUN git clone https://github.com/spring-projects/spring-petclinic.git /usr/src/mymaven
+WORKDIR /usr/src/mymaven
+# Add the SQL use statement to the beginning of the SQL files
+RUN sed -i '1i\use petclinic;' src/main/resources/db/mysql/schema.sql
+RUN sed -i '1i\use petclinic;' src/main/resources/db/mysql/data.sql
+
+FROM mariadb:10.9-jammy
+COPY --from=compile /usr/src/mymaven/src/main/resources/db/mysql/*.sql /docker-entrypoint-initdb.d
+# Set the run order of the SQL files
+RUN echo "CREATE DATABASE petclinic" >/docker-entrypoint-initdb.d/01-petclinic.sql
+RUN mv /docker-entrypoint-initdb.d/schema.sql /docker-entrypoint-initdb.d/02-schema.sql
+RUN mv /docker-entrypoint-initdb.d/data.sql /docker-entrypoint-initdb.d/03-data.sql
+RUN mv /docker-entrypoint-initdb.d/user.sql /docker-entrypoint-initdb.d/04-user.sql
+# Set default variable values for database to match application.properties for MySQL
+ENV MARIADB_USER=petclinic
+ENV MARIADB_PASSWORD=petclinic
+ENV MARIADB_ROOT_PASSWORD=petclinic
