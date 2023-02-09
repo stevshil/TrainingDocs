@@ -1,0 +1,10 @@
+FROM maven:3.8.6-openjdk-11-slim AS build
+COPY . /code
+WORKDIR /code
+RUN mvn package
+
+# FROM openjdk:11.0
+FROM openjdk:11.0-jre
+COPY --from=build /code/target/*.jar /app.jar
+ENV EMPLOYEE_MONGODB_URI="mongodb://mymongodb1:27017/test"
+ENTRYPOINT ["java","-jar","/app.jar"]

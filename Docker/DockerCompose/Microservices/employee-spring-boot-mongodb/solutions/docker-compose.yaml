@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  mymongodb1:
+    build:
+      dockerfile: Dockerfile-mongodb
+      context: .
+    image: mymongodb
+    ports:
+      - "27017:27017"
+  myapp1:
+    build:
+      dockerfile: Dockerfile-app
+      context: .
+    image: myapp
+    ports:
+      - "8181:8080"

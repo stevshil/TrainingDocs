@@ -1,0 +1,14 @@
+# TODO: Complete this YAML file, adding bits where indicated...
+version: '3.8'
+services:
+   
+   mymongodb1:
+     # TODO: Specify how to build an image named 'mymongodb:1.0.0', and run a container instance named 'mymongodb1'. 
+
+
+
+   myapp1:
+     # TODO: Specify how to build an image named 'myapp:1.0.0', and to run a container instance named 'myapp1'.
+     #       Link this container to the 'mymongodb1' container.     
+
+
