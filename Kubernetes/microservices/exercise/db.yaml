@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deploy
+  labels:
+    app: database
+  namespace: test1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+        app.kubernetes.io/name: database
+    spec:
+      containers:
+      - name: 
+        image: 
+        ports:
+        - containerPort: 
+        livenessProbe:
+          tcpSocket:
+            port: 
+          initialDelaySeconds: 
+          periodSeconds: 
+        readinessProbe:
+          tcpSocket:
+            port: 
+          initialDelaySeconds: 
+          periodSeconds: 
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: secret123
