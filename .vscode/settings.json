@@ -19,7 +19,7 @@
             "port": 15432,
             "driver": "PostgreSQL",
             "name": "PGTraining",
-            "database": "pubs",
+            "database": "northwind",
             "username": "postgres",
             "password": "secret123"
         }
