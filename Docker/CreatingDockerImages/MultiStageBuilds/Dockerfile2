@@ -1,0 +1,18 @@
+FROM alpine:latest AS build 
+
+RUN apk update && \    
+    apk add --no-cache g++ 
+
+RUN mkdir /app 
+WORKDIR /app 
+COPY . /app 
+RUN mkdir bin 
+RUN g++ hello.cpp -o bin/hello 
+
+FROM alpine:latest 
+
+RUN apk update && \    
+    apk add --no-cache libstdc++
+
+COPY --from=build /app/bin/hello /app/hello 
+ENTRYPOINT /app/hello 

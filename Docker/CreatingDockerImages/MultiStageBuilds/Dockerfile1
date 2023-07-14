@@ -1,0 +1,13 @@
+FROM alpine:latest 
+
+RUN apk update && \    
+    apk add --no-cache g++ && \
+    apk add --no-cache libstdc++
+
+RUN mkdir /app 
+WORKDIR /app 
+COPY . /app 
+RUN mkdir bin 
+RUN g++ hello.cpp -o bin/hello 
+
+ENTRYPOINT /app/bin/hello 

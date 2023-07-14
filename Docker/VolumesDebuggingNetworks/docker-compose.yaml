@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+   mysql:
+     container_name: mysql
+     build:
+       context: .
+       dockerfile: Dockerfile-mysql
+     image: emps/mysql:1.0.0
+     ports:
+       - "3306:3306"
+     volumes:
+           - /docker/emps/mysql:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: c0nygre
+     command: --explicit_defaults_for_timestamp
+
+   app:
+     container_name: app
+     build:
+       context: .
+       dockerfile: Dockerfile-app
+     image: emps/app:1.0.0
+     links:
+       - mysql:mysql
