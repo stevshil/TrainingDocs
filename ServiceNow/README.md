@@ -53,6 +53,17 @@ Once you have started your PDI you should see the following screen:
 
 If you've selected Tokyo, you might not see the left hand menu by default, but instead you will have a menu at the top left of the screen, of which you will have the word **All**.  Click this and the menu will appear, and then click the **Pin** icon to the right of the **filter** text box.
 
+If you do not get to the menu above try putting the following after the **.com**;
+
+```
+/now/nav/ui/classic/params/target/ui_page.do
+```
+
+e.g.
+```
+https://dev89579.service-now.com/now/nav/ui/classic/params/target/ui_page.do
+```
+
 ## Working with Users
 
 Once you have a ServiceNow PDI, you can add other users to your instance.  ServiceNow does provide some users already that you can **Impersonate** by clicking on the **System Administrator** icon at the top of the main screen:
