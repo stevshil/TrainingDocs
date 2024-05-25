@@ -1,0 +1,5 @@
+# Insecure
+docker run -d --name=mywebhack -v ${PWD}/conf.d:/etc/nginx/conf.d -p1080:80 -p1443:443 nginx
+
+# Secure
+docker run -d --name=mywebhack -v ${PWD}/conf.d:/etc/nginx/conf.d -v ${PWD}/certs:/etc/nginx/certs -p1080:80 -p1443:443 nginx
