@@ -1,0 +1,15 @@
+services:
+  database:
+    image: mariadb:10.9-jammy
+    volumes:
+      - "./database:/docker-entrypoint-initdb.d"
+    environment:
+      MARIADB_ROOT_PASSWORD: secret123
+  webapp:
+    image: steve:phpweb
+    build:
+      context: web
+    volumes:
+      - "./web:/var/www/html"
+    ports:
+      - 1080:80

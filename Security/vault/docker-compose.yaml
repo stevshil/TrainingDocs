@@ -1,0 +1,12 @@
+services:
+  server:
+    image: hashicorp/vault
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: secret123
+      VAULT_DEV_LISTEN_ADDRESS: '0.0.0.0:8200'
+    ports:
+      - 8200:8200
+  client:
+    image: hashicorp/vault
