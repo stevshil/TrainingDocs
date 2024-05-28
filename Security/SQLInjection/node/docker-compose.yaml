@@ -5,11 +5,15 @@ services:
       - "../database:/docker-entrypoint-initdb.d"
     environment:
       MARIADB_ROOT_PASSWORD: secret123
-  webapp:
-    image: steve:phpweb
-    build:
-      context: web
-    volumes:
-      - "./web:/var/www/html"
     ports:
-      - 1080:80
+      - 1306:3306
+  webapp:
+    depends_on:
+      - database
+    image: node:22-alpine3.20
+    working_dir: /app/api
+    command: "node main.js"
+    volumes:
+      - ".:/app"
+    ports:
+      - 1080:3000
