@@ -1,11 +1,21 @@
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcryptjs');
+const http = require('http');
 // Below deals with hardcoded values
 require('dotenv').config()
 // Info exposure prevention
-const helmet = require("helmet");
+// const helmet = require("helmet");
 const app = express();
+
+// Using SSL certs
+// const https = require('https');
+// const fs = require('fs');
+// const options = {
+//   key: fs.readFileSync("/app/api/certs/localhost.key"),
+//   cert: fs.readFileSync("/app/api/certs/localhost.cert"),
+// };
+
 
 // Remove for CSRF fix
 app.use(express.json())
@@ -123,7 +133,14 @@ app.put('/users/:id', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 80;
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+// With HTTPS
+var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(options, app);
+
+httpServer.listen(PORT);
+// httpsServer.listen(443);
