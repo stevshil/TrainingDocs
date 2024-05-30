@@ -1,15 +1,41 @@
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcryptjs');
+// Below deals with hardcoded values
+require('dotenv').config()
+// Info exposure prevention
+const helmet = require("helmet");
 const app = express();
-app.use(express.json());
+
+// Remove for CSRF fix
+app.use(express.json())
+
+// Fix for CSRF
+// const cookieSession = require('cookie-session')
+// const csurf = require("csurf");
+// app.use(require("body-parser").json())
+// app.use(
+//   require("cookie-session")({
+//       secret: "secret123",
+//       maxAge: 24 * 60 * 60 * 1000
+//   })
+// );
+
+// app.use(csurf());
+
+// app.use(function(req, res, next) {
+//   res.cookie("mytoken", req.csrfToken());
+//   next();
+// });
 
 // Create a MySQL connection
 const db = mysql.createConnection({
   host: 'database',
+  database: 'user_accounts',
   user: 'root',
   password: 'secret123',
-  database: 'user_accounts',
+  // user: process.env.DBUSER,
+  // password: process.env.DBPASS,
   // host: 'localhost',
   // port: '1306',
 });
