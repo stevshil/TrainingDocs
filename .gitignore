@@ -3,3 +3,8 @@ Security/BufferOverflows/C/overflow
 **/certs/
 **/node_modules/
 **/package-lock.json
+Security/Mongo/data/*.csv
+Security/Mongo/data/*.json
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
