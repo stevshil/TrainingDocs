@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function favPlayer() {
+            var mylist = document.getElementById("myList");
+            document.getElementById("favourite").value = mylist.options[mylist.selectedIndex].text;
+        }
+    </script>
+</head>
+
+<body>
+    <form>
+        Select your favourite Swans player:
+        <select id="myList" onchange="favPlayer()">
+	    <option>Leon Britton</option>
+	    <option>Miguel Michu</option>
+	    <option>Chico Flores</option>
+        </select>
+        <p>Your favourite player is: <input type="text" id="favourite" size="20"></p>
+    </form>
+</body>
+
+</html>
+

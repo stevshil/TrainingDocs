@@ -1,0 +1,16 @@
+/* 
+ *  If you import other stylesheets, you can use media queries here. For example:
+ *     @import url(CommonStylesheet.css) screen and (color);
+ */
+@import url(CommonStylesheet.css);
+
+/* Define a body suitable for printing */
+body {
+	background-color: White;
+	font-family: Times New Roman, serif;
+	margin: 0px auto;
+	max-width: 100%;
+	border: solid;
+	border-color: Black;
+}
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Before and After Pseudo-Elements</title>
+
+		<style>
+			
+			body {
+				font-family: verdana;
+				font-size: 10pt;
+			}
+
+			h1 {
+				counter-reset: p-number;
+			}
+
+			p {
+				counter-increment: p-number;
+			}
+
+			p:before {
+				content: "Paragraph " counter(p-number, upper-roman) ". ";
+				display: block;
+				color: orange;
+				font-weight: bold;
+			}
+
+			p:after {
+				content: url(CloseTriangle.jpg);
+			}	 
+
+		</style>
+		
+	</head>
+
+	<body>
+
+		<h1>Interesting stuff</h1>
+		<p>This is a paragraph with lots of text. I couldn't think of anything to say so I decided to list all the players for the Swans.
+		First we have Vorm in goal, then a back-four of Rangel, Caulder, Williams, and Taylor. The midfield is a bit harder, we have Leon, Joey,
+		Kemi, Gower, and Sigurdsson &amp; MacEachrey (on loan). The wingers are Scotty Sinclair, Dyer (for England!), and Routledge. Up front 
+		the first choice is Danny Graham, with Lita and Moore as options off the bench.</p>
+		
+		<p>If you look carefully you'll see this paragraph is almost the same as the first one. I decided to list all the players for the Swans again!
+		First we have Vorm in goal, then a back-four of Rangel, Caulder, Williams, and Taylor. The midfield is a bit harder, we have Leon, Joey,
+		Kemi, Gower, and Sigurdsson &amp; MacEachrey (on loan). The wingers are Scotty Sinclair, Dyer (for England!), and Routledge. Up front 
+		the first choice is Danny Graham, with Lita and Moore as options off the bench.</p>
+
+		<h1>It's still interesting stuff</h1>
+		<p>This is a paragraph with lots of text. I couldn't think of anything to say so I decided to list all the players for the Swans.
+		First we have Vorm in goal, then a back-four of Rangel, Caulder, Williams, and Taylor. The midfield is a bit harder, we have Leon, Joey,
+		Kemi, Gower, and Sigurdsson &amp; MacEachrey (on loan). The wingers are Scotty Sinclair, Dyer (for England!), and Routledge. Up front 
+		the first choice is Danny Graham, with Lita and Moore as options off the bench.</p>
+		
+		<p>If you look carefully you'll see this paragraph is almost the same as the first one. I decided to list all the players for the Swans again!
+		First we have Vorm in goal, then a back-four of Rangel, Caulder, Williams, and Taylor. The midfield is a bit harder, we have Leon, Joey,
+		Kemi, Gower, and Sigurdsson &amp; MacEachrey (on loan). The wingers are Scotty Sinclair, Dyer (for England!), and Routledge. Up front 
+		the first choice is Danny Graham, with Lita and Moore as options off the bench.</p>
+
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layout Example</title>
+    <link rel="stylesheet" type="text/css" href="layout.css"/>
+</head>
+<body>
+<p>In the example below, each grid item is now only concerned with styling.<br>
+The grid_rows are now controlling the layout as they are the containers for the items.<br>
+To achieve this we have used Sass to allow us to separate the layout from the style.
+</p>
+<div class="grid">
+    <div class="grid__row grid__row--sm">
+        <div class="grid__item">1</div>
+        <div class="grid__item">2</div>
+    </div>
+    <div class="grid__row grid__row--md">
+        <div class="grid__item">1</div>
+        <div class="grid__item">2</div>
+        <div class="grid__item">3</div>
+    </div>
+    <div class="grid__row grid__row--lg">
+        <div class="grid__item">1</div>
+        <div class="grid__item">2</div>
+        <div class="grid__item">3</div>
+        <div class="grid__item">4</div>
+    </div>
+</div>
+</body>
+</html>

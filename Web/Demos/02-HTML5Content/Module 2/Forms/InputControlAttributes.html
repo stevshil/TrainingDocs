@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<title>Input Control Attributes</title>
+
+	<style>
+		body {
+			font-family: arial, sans-serif;
+		}
+		
+		form div {
+			margin-bottom: 5px;
+		}
+		
+		label {
+			float: left;
+			width: 150px;
+			font-size: 10pt;
+		}
+		
+		input: {
+			border: solid 1px;
+			margin-bottom: 5px;
+		}
+		
+		input:valid {
+			border-color: lightblue;
+		}
+		
+		input:invalid {
+			border-color: red;
+			color: red;
+			background-color: pink;
+		}
+		
+	</style>
+
+	<script>
+		function onSubmit() {
+			
+			var myNameElem = document.getElementById("myName");
+			alert("Name: " + myNameElem.value);
+			
+			var myHouseNumberElem = document.getElementById("myHouseNumber");
+			alert("House number: " + myHouseNumberElem.value);
+			
+			var myPostCodeElem = document.getElementById("myPostCode");
+			alert("Post code: " + myPostCodeElem.value);
+
+			var myBirthCountryElem = document.getElementById("myBirthCountry");
+			alert("Birth country: " + myBirthCountryElem.value);
+
+			var myResidenceCountryElem = document.getElementById("myResidenceCountry");
+			alert("Residence country: " + myResidenceCountryElem.value);
+
+			var myPicsElem = document.getElementById("myPics");
+			var numPics = myPicsElem.files.length;
+			for (var i = 0; i < numPics; i++) {
+				var thisPic = myPicsElem.files[i];
+				alert("File " + (i+1) + " of " + numPics + ": " +
+					  thisPic.name + " [" +
+					  thisPic.size + " bytes]");
+			}
+			return false;
+		}
+	</script>
+	
+</head>
+<body>
+
+	<h1>Input Control Attributes</h1>
+	
+	<form onsubmit="return onSubmit()">
+
+		<div>
+			<label>Name:</label>
+			<input type="text" id="myName" autofocus autocomplete="off" placeholder="Enter your name" required="true" size="30" />
+		</div>
+		
+		<div>
+			<label>House Number:</label>
+			<input type="text" id="myHouseNumber" placeholder="Enter your house number" required="true" size="30" />
+		</div>
+
+		<div>
+			<label>UK post code:</label>
+			<input type="text" id="myPostCode" pattern="[a-zA-Z]{1,2}\d{1,2}\s\d[a-zA-Z]{2}" placeholder="Enter a UK post code" size="30" />
+		</div>
+
+		<div>
+			<label>Country of birth:</label>
+			<input list="countries" id="myBirthCountry" placeholder="Select your country of birth" size="30" />
+		</div>
+		
+		<div>
+			<label>Country of residence:</label>
+			<input list="countries" id="myResidenceCountry" placeholder="Select your country of residence" size="30" />
+		</div>
+		
+		<div>
+			<label>Pics:</label>
+			<input type="file" id="myPics" multiple />
+		</div>
+			
+		<button>Submit</button>
+
+	</form>
+	
+	<datalist id="countries">
+		<option value="England">
+		<option value="Scotland">
+		<option value="Wales">
+		<option value="N. Ireland">
+	</datalist>
+
+</body>
+</html>

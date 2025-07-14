@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Selector API Demo</title>
+
+  <style type="text/css">
+    td {
+      border-style: solid;
+      border-width: 1px;
+    }
+
+    td:hover {
+      background-color: orange;
+    }
+	
+	div {
+	  padding: 10px;
+	}
+
+	</style>
+</head>
+
+<body>
+  <section>
+    <!-- create a table with a 3 by 3 cell display -->
+    <table>
+      <tr>
+        <td><img src="images/Wales.png" width="150" height="100"/></td> 
+		<td><img src="images/Norway.png" width="150" height="100"/></td>
+		<td><img src="images/Sweden.png" width="150" height="100"/></td> 
+      </tr>
+      <tr>
+        <td><img src="images/Brazil.png" width="150" height="100"/></td> 
+		<td><img src="images/China.png" width="150" height="100"/></td> 
+		<td><img src="images/India.png" width="150" height="100"/></td> 
+      </tr>
+      <tr>
+        <td><img src="images/Spain.png" width="150" height="100"/></td> 
+		<td><img src="images/Greece.png" width="150" height="100"/></td> 
+		<td><img src="images/USA.png" width="150" height="100"/></td> 
+      </tr>
+    </table>
+
+    <button type="button" id="echoButton" autofocus>Echo an img via hovering!</button>
+    <div id="echoDiv"></div>
+
+    <script type="text/javascript">
+      function handleEvent(event) {
+          var hoveredCell = event.target;
+          console.log(hoveredCell.innerHTML);
+          document.querySelector("#echoDiv").innerHTML = hoveredCell.outerHTML;
+      }
+
+      document.querySelectorAll("td").forEach(function(img) {
+        img.addEventListener("mouseover", handleEvent);
+      });
+
+      function handleButtonClick(event) {
+        var echoDiv = document.querySelector("#echoDiv");
+        if (echoDiv.innerHTML) {
+          alert("You hovered over: " + echoDiv.innerHTML.split('/').pop().split('.png')[0]);
+        } else {
+          alert("Hover over an image first!");
+        }
+      }
+
+      document.querySelector("#echoButton").addEventListener("click", handleButtonClick);
+	</script>
+  </section>
+
+</body>
+</html>

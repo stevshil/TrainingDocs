@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Class Selectors</title>
+
+		<style>
+
+			label {
+				width: 100px;
+				float: left;
+			}
+			
+			.optional {
+				background-color: #eeeeff;
+			}
+
+			.required {
+				background-color: #ffe0e0;
+			}
+
+		</style>
+		
+	</head>
+
+	<body>
+
+		<form onsubmit="return false">
+		
+			<label>Name</label>    <input type="text" width="20" class="required" /> <br/>
+			<label>Address</label> <input type="text" width="20" class="required" /> <br/>
+			<label>Tel</label>     <input type="text" width="20" class="optional" /> <br/>
+			
+			<label>Nationality</label> 
+			<select class="required">
+				<option>UK</option>
+				<option>Norway</option>
+				<option>France</option>
+				<option>USA</option>
+			</select>
+			<br/>
+			
+			<label>Favourite team</label> 
+			<select class="optional">
+				<option>Swansea City</option>
+				<option>Other</option>
+			</select>
+			<br/>
+			
+			<input type="submit" value="Submit"/>
+		</form>
+	
+	</body>
+</html>

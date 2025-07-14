@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function convertCase(checkbox) {
+
+            var firstNameTextBox = document.getElementById("fname");
+            var lastNameTextBox  = document.getElementById("lname");
+
+            // Check-boxes have a property named checked.
+            if (checkbox.checked) {
+                // Text-boxes have a property named value.
+                firstNameTextBox.value = firstNameTextBox.value.toUpperCase();
+                lastNameTextBox.value  = lastNameTextBox.value.toUpperCase();
+            }
+            else {
+                firstNameTextBox.value = firstNameTextBox.value.toLowerCase();
+                lastNameTextBox.value  = lastNameTextBox.value.toLowerCase();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form name="form1">
+        First name: <input type="text" id="fname" size="20"/> <br/><br/>
+        Last name:  <input type="text" id="lname" size="20"/> <br/><br/>
+
+        Upper case?
+        <input type="checkBox" onclick="convertCase(this)" />
+    </form>
+</body>
+
+</html>
+

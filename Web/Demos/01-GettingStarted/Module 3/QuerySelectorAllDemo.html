@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Selector API Demo</title>
+
+  <style type="text/css">
+    td {
+      border-style: solid;
+      border-width: 1px;
+    }
+
+    td:hover {
+      background-color: orange;
+    }
+	
+	div {
+	  padding: 10px;
+	}
+
+	</style>
+</head>
+
+<body>
+  <section>
+    <!-- create a table with a 3 by 3 cell display -->
+    <table>
+      <tr>
+        <td><input type="checkbox" name="Wales">  <image src="images\Wales.png" width="150" height="100"/></input>  </td> 
+		<td><input type="checkbox" name="Norway"> <image src="images\Norway.png" width="150" height="100"/></input> </td>
+		<td><input type="checkbox" name="Sweden"> <image src="images\Sweden.png" width="150" height="100"/></input> </td> 
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="Brazil"> <image src="images\Brazil.png" width="150" height="100"/></input> </td> 
+		<td><input type="checkbox" name="China">  <image src="images\China.png" width="150" height="100"/></input>  </td> 
+		<td><input type="checkbox" name="India">  <image src="images\India.png" width="150" height="100"/></input>  </td> 
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="Spain">  <image src="images\Spain.png" width="150" height="100"/></input>  </td> 
+		<td><input type="checkbox" name="Greece"> <image src="images\Greece.png" width="150" height="100"/></input> </td> 
+		<td><input type="checkbox" name="USA">    <image src="images\USA.png" width="150" height="100"/></input>    </td> 
+      </tr>
+    </table>
+
+    <button type="button" id="echoButton" autofocus>Select some countries and then click me!</button>
+    <div id="echoDiv" />
+
+    <script type="text/javascript">
+		document.getElementById("echoButton").onclick = function() {
+
+			// Find the table cell currently hovered in the page.
+			var selected = document.querySelectorAll("*:checked");
+
+			var result = "You selected these countries: <ul>";
+			for (var i = 0; i < selected.length; i++) {
+				result += "<li>" + selected[i].name + "</li>"
+			}
+			result += "</ul>";
+
+			document.getElementById("echoDiv").innerHTML = result;
+		}
+    </script>
+  </section>
+</body>
+</html>

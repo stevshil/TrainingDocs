@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Structural Pseudo Classes 2</title>
+
+    <style>
+        table {
+            width: 50%;
+        }
+
+        tr {
+            height: 30px;
+        }
+        
+        body {
+            font-family: verdana, arial; 
+            font-size: 10pt;
+        }
+        
+        tr:nth-child(odd) {
+            background-color: yellow; 
+        }
+
+        tr:nth-child(even) {
+            background-color: orange; 
+        }
+
+        /* Additional possibilities ... */
+        tr:nth-child(3n+1) {
+            background-color: lightblue; 
+        }
+        
+        tr:last-child {
+            background-color: red; 
+        }
+        
+        li:first-child {
+            color: orange;
+        }
+	
+        li:not(.invisible):nth-last-child(5) {
+            background-color: red;
+        }
+	
+        .invisible {
+            display: none;
+        }
+	
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td>Fred</td>
+            <td>USA</td>
+            <td>25</td>
+        </tr>
+        <tr>
+            <td>Mary</td>
+            <td>UK</td>
+            <td>32</td>
+        </tr>
+        <tr>
+            <td>Rune</td>
+            <td>Norway</td>
+            <td>28</td>
+        </tr>
+        <tr>
+            <td>Emil</td>
+            <td>Italy</td>
+            <td>40</td>
+        </tr>
+        <tr>
+            <td>Fede</td>
+            <td>Brazil</td>
+            <td>38</td>
+        </tr>
+        <tr>
+            <td>Erik</td>
+            <td>Netherlands</td>
+            <td>25</td>
+        </tr>
+        <tr>
+            <td>Joan</td>
+            <td>France</td>
+            <td>40</td>
+        </tr>
+        <tr>
+            <td>Sue</td>
+            <td>Germany</td>
+            <td>40</td>
+        </tr>
+    </table>
+
+    <ul>
+        <li>India: 1000 million</li>
+        <li>USA: 200 million</li>
+        <li>Sweden: 8 million</li>
+        <li>Australia: 20 million</li>
+        <li class="invisible">UK: 60 million</li>
+        <li>Norway: 5 million</li>
+    </ul>
+	
+	
+</body>
+</html>

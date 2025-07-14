@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<title>Input Control Tags</title>
+
+	<style>
+		body {
+			font-family: arial, sans-serif;
+		}
+		
+		label {
+			float: left;
+			width: 120px;
+		}
+		
+		input[type='text'] {
+			width: 200px;
+		}
+		
+		fieldset {
+			margin-bottom: 10px;
+		}
+		
+		legend {
+			font-weight: bold;
+			color: darkblue;
+		}
+		
+		div.formpanel {
+			background-color: lightblue;
+			padding: 5px;
+		}
+		
+	</style>
+</head>
+<body>
+
+	<h1>Using FieldSets</h1>
+	
+	<form onsubmit="return false;">
+
+		<fieldset>
+			<legend>Home address</legend>
+			<div class="formpanel">
+				<label>Address line 1:</label>
+				<input type="text" /> <br/>
+
+				<label>Address line 2:</label>
+				<input type="text" /> <br/>
+
+				<label>Address line 3:</label>
+				<input type="text" /> <br/>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Work address</legend>
+			<div class="formpanel">
+				<label>Address line 1:</label>
+				<input type="text" /> <br/>
+
+				<label>Address line 2:</label>
+				<input type="text" /> <br/>
+
+				<label>Address line 3:</label>
+				<input type="text" /> <br/>
+			</div>
+		</fieldset>
+
+		<input type="button" value="Submit"></input>
+		
+	</form>
+
+</body>
+</html>

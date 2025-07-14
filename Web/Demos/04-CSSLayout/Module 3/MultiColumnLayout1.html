@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS3 Multi-Column Layout - Example 1</title>
+
+    <style>
+
+    body {
+        font-family: arial;
+    }
+    
+    #myContent {
+
+        /* Define a variable number of columns, depending on width of parent container, each with a minimum width of 300px */
+        column-width: 200px;
+
+        /* Define a gap of 20px between columns */
+        column-gap: 20px;
+        
+        /* Define a light blue line between columns */
+        column-rule: 2px solid lightblue;
+        
+        /* CSS rules to control the flow behavior of text, and make it easier to observe column breaks */
+        height: 300px;
+        column-fill: auto;        
+    }
+    
+    #myPara1
+    {
+        color: red;
+    }
+    
+    #myPara2
+    {
+        color: green;
+    }
+
+    #myPara3
+    {
+        color: blue;
+    }
+    
+
+</style>
+</head>
+<body>
+    <div id="myContent">
+        <p id="myPara1">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <p id="myPara2">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. 
+        </p>
+        <p id="myPara3">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. 
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Additional HTML5 useful elements</title>
+    
+    <style>
+        body {
+            font-family: arial, verdana, sans-serif;
+        }
+        
+        time {
+            color: red;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        #messageArea {
+            background-color: lightgreen;
+            width: 100%;
+        }
+            
+    </style>
+    
+    <script>
+        function onload() {
+            var messageAreaElem = document.getElementById("messageArea");
+            var timeElems = document.getElementsByTagName("time");
+            for (var i = 0; i < timeElems.length; i++) {
+                timeElems[i].onmouseover = function() {
+                    messageAreaElem.innerHTML = this.innerHTML + ": " + this.getAttribute("datetime");
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="onload()">
+
+    <hgroup>
+        <h1>Important Dates</h1>
+        <h2>In my life :-)</h2>
+    </hgroup>
+
+    <time datetime="1964-12-03">My birthday</time>
+    <time datetime="2011-05-30T16:51:00+0100">Swansea City's promotion to the Premier League (CET time)</time>
+
+    <p id="messageArea">Hover over one of the &lt;time&gt; elements in red above, to see the date/time value here</p>
+
+    <p>Also note, <mark>Swansea City</mark> are the best team <small>[See <a href="http://www.swanseacity.net">here</a> for details]</small></p>
+
+</body>
+</html>

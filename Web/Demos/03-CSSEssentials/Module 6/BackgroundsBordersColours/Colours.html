@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Colors Demo</title>
+
+     <style>
+        div {
+            font-family: verdana, arial; 
+            font-size: small;
+            padding: 10px;
+            width: 400px;
+            height: 40px;
+            border-radius: 5px;
+        }
+        
+        .color1 {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+        
+        .color2 {
+            background-color: rgba(0%, 100%, 0%, 0.1);
+        }
+        
+        .color3 {
+            background-color: hsl(240, 100%, 90%);
+        }
+        
+        .color4 {
+            background-color: hsla(240, 100%, 90%, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+
+        <div class="color1">
+            RGBA color expressed using numbers.<br/>
+            background-color: rgba(255, 0, 0, 0.1);
+        </div>
+
+        <br/><br/>
+
+        <div class="color2">
+            RGBA color expressed using percentages.<br/>
+            background-color: rgba(0%, 100%, 0%, 0.1);
+        </div>
+
+        <br/><br/>
+
+        <div class="color3">
+            HSL color.<br/>
+            background-color: hsl(240, 100%, 90%);
+        </div>
+        
+        <br/><br/>
+
+        <div class="color4">
+            HSLA color.<br/>
+            background-color: hsla(240, 100%, 90%, 0.25);
+        </div>
+
+</body>
+</html>

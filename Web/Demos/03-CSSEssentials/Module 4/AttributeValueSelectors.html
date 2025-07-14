@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Attribute Presence Selectors</title>
+
+		<style>
+
+			img {
+				width: 50px;
+			}
+		
+			img[src="euroImages/Wales.png"] {
+				width: 200px;
+			}
+
+			img[src^="nonEuroImages/"] {
+				width: 100px;
+			}
+
+		</style>
+		
+	</head>
+
+	<body>
+
+		<img src="euroImages/Wales.png" alt="Wales" />
+		<br/>
+		
+		<img src="euroImages/Norway.png" alt="Norway" />
+		<img src="euroImages/Sweden.png" alt="Sweden" />
+		<img src="euroImages/Spain.png" alt="Spain" />
+		<img src="euroImages/Greece.png" alt="Greece" />
+		<br/>
+
+		<img src="nonEuroImages/USA.png" alt="USA" />
+		<img src="nonEuroImages/China.png" alt="China" />
+		<img src="nonEuroImages/India.png" alt="India" />
+		<img src="nonEuroImages/Brazil.png" alt="Brazil" />
+		<br/>
+
+	</body>
+</html>

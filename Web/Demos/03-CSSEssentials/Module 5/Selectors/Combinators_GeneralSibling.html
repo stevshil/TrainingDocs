@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>General Sibling Combinators Demo</title>
+
+    <style>
+        body {
+            font-family: verdana, arial; 
+            font-size: 10pt;
+        }
+
+        .loud {
+            text-decoration: underline;
+        }
+        
+        h3 ~ p {
+            background-color: orange;
+        }
+
+        h3.loud ~ p {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <h3>Here are your weekend tasks:</h3>
+        <p>Watch football</p>
+        <p>Clean car</p>
+        <p>Cut lawn</p>
+    </div>
+
+    <hr/>
+    
+    <div>
+        <h3 class="loud">Here are your tasks for today:</h3>
+        <p>Make another cup of tea</p>
+        <p>Do a bit of work (maybe)</p>
+        <p>Go for a run</p>
+    </div>
+	
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+.grid {
+  border: solid 1px #e7e7e7; }
+
+/* layout only controlled here */
+.grid__row {
+  display: flex;
+  flex-direction: column;
+  /* layout details around border can be in the container element */ }
+  .grid__row .grid__item {
+    border: solid 1px #e7e7e7; }
+
+/* style only aspects of grid item controlled here */
+.grid__item {
+  flex: 1;
+  padding: 12px;
+  color: aqua; }
+
+@media all and (min-width: 480px) {
+  .grid__row--sm {
+    flex-direction: row; } }
+@media all and (min-width: 720px) {
+  .grid__row--md {
+    flex-direction: row; } }
+@media all and (min-width: 960px) {
+  .grid__row--lg {
+    flex-direction: row; } }
+
+/*# sourceMappingURL=layout.css.map */

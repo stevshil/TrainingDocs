@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function check(player) {
+            document.getElementById("answer").value = player;
+        }
+    </script>
+</head>
+
+<body>
+    <p>Who's your favourite Swans player?</p>
+
+    <form>
+        <input type="radio" name="player" onclick="check(this.value)" value="Leon">Leon Britton<br/>
+        <input type="radio" name="player" onclick="check(this.value)" value="Michu">Miguel Michu<br/>
+        <input type="radio" name="player" onclick="check(this.value)" value="Chico">Chico Flores<br/>
+        <br />
+        Your favourite player is: <input type="text" id="answer" size="20">
+    </form>
+
+</body>
+</html>
+

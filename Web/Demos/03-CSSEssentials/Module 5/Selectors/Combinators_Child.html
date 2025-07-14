@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Child Combinators Demo</title>
+
+    <style>
+        body {
+            font-family: verdana, arial; 
+            font-size: 10pt;
+        }
+
+        span > p {
+            color: orange;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <span>
+        <p>This p is a direct child of the span.</p>
+        <b>
+            <p>This p is a grandparent of the span.</p>
+        </b>
+        <b><i>
+            <p>This p is a great grandparent of the span.</p>
+        </i></b>
+    </span>
+
+</body>
+</html>

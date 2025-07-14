@@ -1,0 +1,20 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function getValue() {
+
+            // Use document.getElementById() to get an element with a specified ID.
+            var elem = document.getElementById("myHeader");
+            elem.innerHTML += " <i>hello</i>";
+       }
+    </script>
+</head>
+
+<body>
+    <h1 id="myHeader" onclick="getValue()">This is a header</h1>
+    <p>Click on the header to modify its value</p>
+</body>
+
+</html>
+

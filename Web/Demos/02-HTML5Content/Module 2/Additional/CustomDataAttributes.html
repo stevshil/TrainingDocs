@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+    <title>Custom Data Attributes</title>
+
+	<style>
+		body { 
+			font-family: verdana; 
+		}
+		
+		form {
+			width: 600px;
+			background-color: lightblue;
+			border: 2px solid blue;
+			margin-bottom: 30px;
+			padding: 10px;
+		}
+			
+		label {
+			width: 130px;
+			float: left;
+		}
+		
+		p.error {
+			color: red;
+		}
+		
+		button {
+			background-color: yellow;
+			color: orange;
+			font-weight: bold;
+			width: 70px;
+			height: 30px;
+			margin-left: 5px;
+		}		
+		
+	</style>
+		
+	<script>
+
+		function validate() {
+		
+			// Remove any previous error message.
+			var messageAreaElem = document.getElementById("messageArea");
+			messageAreaElem.innerHTML = "";
+
+			// Iterate through all the input elements.
+			var inputElems = document.getElementsByTagName("input");
+			for (var i = 0; i < inputElems.length; i++) {
+				
+				// Set up a helper variable for this input element.
+				var elem = inputElems[i];
+				
+				// Perform a Regular Expression test to see if the element format is invalid.
+				if (elem.dataset && elem.dataset.format && !elem.value.match(elem.dataset.format)) {
+				
+					// The user input didn't match the required format, so create a <p> displaying a suitable error message.
+					var errorMessage = elem.id + " error: " + elem.dataset.errorMessage;
+
+					var errorElem = document.createElement("p");
+					errorElem.setAttribute("class", "error");
+					errorElem.innerHTML = errorMessage;
+					
+					messageAreaElem.appendChild(errorElem);
+				}
+			}
+			
+			return false;
+		}
+		
+    </script>
+</head>
+<body>
+	<h1>Custom data attributes</h1>
+	
+	<form action="" onsubmit="return validate()">
+	
+		<label for="nameText">Name: </label>	
+		<input id="nameText" type="text" size="25" 
+			   data-format="[A-Za-z]+\s[A-Za-z]+"
+			   data-error-message="You must enter your first name and last name" /> <br/>
+
+		<label for="emailText">E-mail: </label>	
+		<input id="emailText" type="text" size="25" 
+			   data-format="\w+@[\w.]+([.][A-Za-z]{2,})$"
+			   data-error-message="You must enter a valid e-mail address" /> <br/>
+
+		<label for="homeTelText">Home tel: </label>	
+		<input id="homeTelText" type="text" size="25" /> <br/>
+
+		<label for="workTelText">Work tel: </label>	
+		<input id="workTelText" type="text" size="25" /> <br/>
+
+		<button>Submit</button> 
+
+	</form>
+	
+	<div id="messageArea"></div>
+	
+</body>
+</html>

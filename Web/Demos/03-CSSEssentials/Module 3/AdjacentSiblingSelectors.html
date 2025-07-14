@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Adjacent Sibling Selectors</title>
+
+		<style>
+
+			h1 	+ div {
+				font-style: italic;
+			}
+			
+		</style>
+		
+	</head>
+
+	<body>
+
+	<h1>Here's an h1 heading</h1>
+	<div>This is the first div after an h1 element. It should be in italic.</div>
+	<div>This is another div after an h1 element. It should not be in italic.</div>
+	<div>This is yet another div after an h1 element. It should not be in italic either.</div>
+	
+	<h1>Here's another h1 heading</h1>
+	<div>This is the first div after an h1 element. It should be in italic.</div>
+	<div>This is another div after an h1 element. It should not be in italic.</div>
+	<div>This is yet another div after an h1 element. It should not be in italic either.</div>
+
+	</body>
+</html>

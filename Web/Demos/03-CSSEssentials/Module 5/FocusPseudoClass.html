@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Focus Pseudo-Class</title>
+
+		<style>
+			
+			body {
+				font-family: verdana;
+				font-size: 10pt;
+			}
+
+			label {
+				width: 100px;
+				float: left;
+			}
+			
+			input:focus, select:focus {
+				background-color: pink;
+			}
+			
+			select:focus {
+				background-color: pink;
+			}			
+			
+		</style>
+		
+	</head>
+
+	<body>
+
+		<form onsubmit="return false">
+		
+			<label>Name</label>    <input type="text" width="20" /> <br/>
+			<label>Address</label> <input type="text" width="20" /> <br/>
+			<label>Tel</label>     <input type="text" width="20" /> <br/>
+			
+			<label>Nationality</label> 
+			<select>
+				<option>UK</option>
+				<option>Norway</option>
+				<option>France</option>
+				<option>USA</option>
+			</select>
+			<br/>
+			
+			<label>Favourite team</label> 
+			<select>
+				<option>Swansea City</option>
+				<option>Other</option>
+			</select>
+			<br/>
+
+			<input type="submit" value="Submit"/>
+		</form>
+
+	</body>
+</html>

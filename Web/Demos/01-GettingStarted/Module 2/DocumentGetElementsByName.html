@@ -1,0 +1,22 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function getElements() {
+            // Use document.getElementsByName() to get elements with a specified name.
+            var x = document.getElementsByName("myInput");
+            alert(x.length);
+        }
+    </script>
+</head>
+
+<body>
+    <input name="myInput" type="text" size="20" /><br />
+    <input name="myInput" type="text" size="20" /><br />
+    <input name="myInput" type="text" size="20" /><br />
+    <br />
+    <input type="button" onclick="getElements()" value="How many elements named 'myInput'?" />
+</body>
+
+</html>
+

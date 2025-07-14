@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Descendant Selectors</title>
+
+		<style>
+
+			div {
+				margin-bottom: 10px;
+			}
+			
+			#mainContent {
+				color: blue;
+				background-color: #eeeeff;
+			}
+			
+			#additionalContent {
+				color: red;
+				background-color: #ffeeee;
+			}
+			
+			span.emphasis {
+				color: green;
+			}
+			
+			#mainContent span.emphasis {
+				font-weight: bold;
+			}
+
+			#additionalContent span.emphasis {
+				font-style: italic;
+			}
+
+		</style>
+		
+	</head>
+
+	<body>
+
+		<div id="mainContent">
+			This is the <span class="emphasis">main content</span> in the document.<br/>
+			It contains some text.<br/>
+			And some <span class="emphasis">more</span> text.<br/>
+			And <span class="emphasis">yet more</span> text.<br/>
+		</div>
+		
+		<div id="additionalContent">
+			  This is <span class="emphasis">additional content</span> in the document.<br/>
+			  Notice the <span class="emphasis">different</span> color?<br/>
+		</div>
+	
+	</body>
+</html>

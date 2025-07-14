@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Media Queries Example</title>
+	
+	<!-- You can use media queries to specify which stylesheet to apply in different circumstances.   -->
+	<!-- Common media types are "screen", "print", "all", "braille", "handheld", "projection", "tty". -->
+	<!-- You can also define more complex media expressions, such as media="screen and (color)".      -->
+
+	<link rel="stylesheet" type="text/css" media="screen" href="ScreenStylesheet.css">
+	<link rel="stylesheet" type="text/css" media="print"  href="PrintStylesheet.css">
+	
+	<script>
+	
+		// Global variables.
+		var messageAreaElem;
+		var theFigureElem;
+		
+		// Handles notifications that the tests in the media query list have changed truth/falsehood.
+		function updateImages(mql) { 
+			
+			if (mql.matches) { 
+				messageAreaElem.innerHTML = "Displaying figures!"; 
+				theFigureElem.style.display = "block"
+			} 
+			else { 
+				messageAreaElem.innerHTML = "Hiding figures!"; 
+				theFigureElem.style.display = "none"
+			}
+		}
+
+		// Performs page initialization.
+		function onLoad() {
+		
+			messageAreaElem = document.getElementById("messageArea");
+			theFigureElem   = document.getElementById("theFigure");
+
+			// Test if the browser supports media matches.
+			if (window.matchMedia) {
+				messageAreaElem.innerHTML = "Browser supports match media"; 
+			} else {
+				messageAreaElem.innerHTML = "Browser does not support match media"; 
+			}
+
+			// Set up a listener that will be invoked when the width becomes smaller/bigger than 950px.
+			var mediaQueryList = window.matchMedia("screen and (min-width: 950px), print");
+			mediaQueryList.addListener(updateImages); 
+		}	
+		
+		window.addEventListener("load", onLoad, true);
+		
+	</script>
+
+</head>
+
+<body>
+
+	<header>
+		<h1>Media Queries Example</h1>
+		<h2 id="messageArea"></h2>
+		<h4>Fancy eh!</h4>
+	</header>
+
+    <div id="MyMainContainer">
+
+        <nav>
+			<h3>Links</h3>
+			<a href="http://www.video2brain.com/">video2brain</a>
+			<a href="http://www.olsensoft.com">Olsen Software</a>
+			<a href="http://www.google.com">Google</a>
+        </nav>
+
+        <section>
+        
+			<article>
+                <header>
+                    <h1>Welcome!</h1>
+                </header>
+                <p>
+				   This example shows how to use HTML5 semantic markup tags, such as section, article, header, and footer. 
+                   This page looks much better if you link it to the stylesheet!
+				</p>
+				<aside>
+					<h3>By the way...</h3>
+					<p>You can also use many of the traditional HTML tags, such as h1, h2, h3, p, div, etc. HTML5 is all about evolution, not revolution.</p>
+				</aside>
+				<figure id="theFigure">
+					<img src="HTML5_Badge_512.png" alt="HTML5 rocks!"/>
+					<img src="HTML5_sticker.png"   alt="Future of the web!"/>
+					<figcaption>HTML5 is cool baby!</figcaption>
+				</figure>
+                <footer>
+                    <h2>Welcome footer</h2>
+                </footer>
+			</article>
+            
+        </section>
+		
+        <footer>
+            <h2>Thanks for visiting! Feel free to contact us with any suggestions.</h2>
+        </footer>
+    </div>
+
+</body>
+
+</html>
