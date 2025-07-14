@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE>Class ID Example</TITLE>
+    <STYLE>
+        .classid {
+            color: blue;
+            font-weight: bold;
+        }
+
+        #uniqueid {
+            color: red;
+            font-style: italic;
+        }
+
+        #idtarget .classintarget {
+            color: green;
+            font-size: 1.2em;
+        }
+
+        #e1 > .e2 {
+            color: purple;
+            font-size: 1.5em;
+        }
+
+        b::before {
+            content: "Always bold ";
+            color:chocolate
+        }
+    </STYLE>
+</HEAD>
+<BODY>
+    <H1>Class ID Example</H1>
+    <P>This is an example of using a class ID in CSS.</P>
+    <P class="classid">This paragraph has a class ID applied to it, which changes its appearance.</P>
+    <P class="classid">Other paragraphs will not be affected by the class ID.</P>
+    <p id="uniqueid">This paragraph has a unique ID, which also changes its appearance.</p>
+    <p id="uniqueid">At this stage the ID can be used again, but it should target specific elements</p>
+
+    <ul id="idtarget">
+        <li class="classintarget">This list item has a class that is targeted by the ID.</li>
+        <li class="classintarget">Another list item with the same class.</li>
+    </ul>
+
+    <div id="e1">
+        <p class="e2">This paragraph is a child of the div with ID e1 and has a class e2.</p>
+        <p class="e2">Another paragraph with the same class under the same ID.</p>
+    </div>
+    <div class="e2">
+        Has no effect as e2 is not inside e1.
+    </div>
+    <div><b>This is bold.</b></div>
+    <p><b>Where ever bold is</b></p>
+    </Body>
+</HTML>

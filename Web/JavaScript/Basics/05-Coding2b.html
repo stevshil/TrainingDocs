@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<title>JavaScript Basics</title>
+</HEAD>
+<BODY>
+    <h1>Strings</h1>
+    <div id="fullName"></div>
+    <label>FirstName: </label>
+    <input type="text" id="firstName"><br>
+    <label>LastName: </label>
+    <input type="text" id="lastName"><br>
+    <button onclick="getFullName()">Get Full Name</button>
+
+    <script>
+        function getFullName() {
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+
+            if (firstName === lastName) {
+                document.getElementById("fullName").innerHTML = "<h2>Please enter both first and last names.</h2>";
+                return;
+            } else {
+                // Using template literals to create a full name
+                let fullName = firstName + " "+ lastName
+                document.getElementById("fullName").innerHTML = `<h2>Welcome ${fullName}</h2>`;
+            }
+
+        }
+
+        // Example of == vs ===
+        let a = 5;
+        let b = "5";
+        console.log("a is an integer value 5 and b is a string value '5'");
+        if (a == b) {
+            console.log("a and b are equal using == are equal in value only, type not considered");
+        }
+        if (a === b) {
+            console.log("a and b are equal using === (strict equality)");
+        } else {
+            console.log("a and b are not equal using === in value and type");
+        }
+    </script>
+</BODY>
+</HTML>

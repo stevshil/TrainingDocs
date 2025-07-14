@@ -1,0 +1,1 @@
+document.write("<p style='color: darkblue; font-size: 16pt;'>Hello from the 02-external.js file.</p>");

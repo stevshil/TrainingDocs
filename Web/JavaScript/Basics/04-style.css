@@ -1,0 +1,9 @@
+#output {
+    font-size: 16pt;
+    position: absolute;
+    top: 40px;
+    left: 70px;
+    border: 5px solid;
+    visibility: hidden;
+    width: 50%;
+}

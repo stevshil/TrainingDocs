@@ -1,0 +1,149 @@
+navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--dark1);
+    color: var(--light1);
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+body {
+    padding-top: 20px;
+}
+
+menu {
+    flex-basis: auto;
+    padding-top: 50px;
+    /* flex: 1 1 calc(33.333% - 50px); */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.menu-item {
+    border: 1px solid var(--dark1);
+    background-color: var(--light1);
+    flex: 0 1 230px; /* flex-grow, flex-shrink, flex-basis: start size */
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.menu-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+.menu-item .price {
+    align-self: flex-end;
+    margin-top: auto;
+    font-weight: bold;
+    padding: 0px 10px 10px 0px;
+}
+
+button {
+    background-color: var(--dark3);
+    color: var(--light1);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+a:link, a:visited, a:active {
+    color: var(--light1);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--light2);
+    text-decoration: none;
+}
+
+:root {
+    --dark1: #641634;
+    --dark2: #341D3A;
+    --dark3: #29776F;
+    --light1: #EBE896;
+    --light2: #CCB280;
+  
+    color: var(--dark1);
+    background-color: var(--light1);
+  
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+
+/* Hide burger icon on desktop */
+.burger {
+    display: none;
+}
+
+
+  @media (max-width: 700px) {
+    navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        position: relative;
+    }
+    .burger {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1100;
+    }
+    .burger span, .burger span:before, .burger span:after {
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 4px;
+        background: var(--light1);
+        border-radius: 2px;
+        transition: 0.3s;
+        content: '';
+    }
+    .burger span {
+        top: 18px;
+        left: 5px;
+    }
+    .burger span:before {
+        content: '';
+        top: 8px;
+        left: 0;
+    }
+    .burger span:after {
+        content: '';
+        top: -8px;
+        left: 0;
+    }
+    navbar > div {
+        display: none;
+        width: 100%;
+        text-align: left;
+        padding: 10px 20px;
+        background: var(--dark1);
+    }
+    navbar.open > div {
+        display: block;
+    }
+    .logo {
+        display: block !important;
+        width: 100%;
+        padding: 10px 20px;
+        background: var(--dark1);
+    }
+}

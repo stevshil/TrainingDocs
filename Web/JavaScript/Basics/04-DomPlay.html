@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<link rel="stylesheet" href="04-style.css">
+<script>
+    function sendmsg() {
+        inputmsg=document.getElementsByName("msg");
+        if (inputmsg.length == 1) {
+            outmsg = inputmsg[0].value;
+        } else {
+            inputmsg.forEach(element => {
+                outputmsg += element.value + " ";
+            });
+        }
+        document.getElementById("output").innerHTML=outmsg;
+        document.getElementById("output").style.visibility = "visible";
+    }
+
+    function addMore() {
+        var newElement = document.createElement("p");
+        newElement.innerHTML = "New Element";
+        document.body.insertBefore(newElement, document.getElementById("output").nextSibling);
+        // document.body.appendChild(newElement, document.getElementById("clickme").nextSibling);
+    }
+</script>
+</HEAD>
+<BODY>
+    <p>Message: <input name="msg" type="text" size="80"/></p>
+    <button name="Send" onclick="sendmsg()">Send</button>
+    <div id="output"></div>
+    <hr />
+    <hr />
+    <p><input type="text" value="Can't Touch This" onfocus="blur()" /></p>
+    <p><button id="clickme" onclick="addMore()" >Click Me</button></p>
+</BODY>
+</HTML>

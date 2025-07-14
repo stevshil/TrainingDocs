@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<title>JavaScript Basics</title>
+</HEAD>
+<BODY>
+    <div id="userName"></div>
+    <div id="monthName"></div>
+    <div id="maths"></div>
+    <div id="maths2"></div>
+    <div id="maths3"></div>
+    <script>
+        let userName = "Steve";
+        monthName = "July";
+
+        document.getElementById("userName").innerHTML = `<h1>Hello, ${userName}!</h1>`;
+        document.getElementById("monthName").innerHTML = `<p>Current month is ${monthName}.</p>`;
+
+        let num1 = 10;
+        let num2 = 20;
+        let sum = num1 + num2;
+        document.getElementById("maths").innerHTML = `<p>${num1} + ${num2} = ${sum}.</p>`;
+        document.getElementById("maths2").innerHTML = `<p>++num1 is ${++num1}</p>`;
+        document.getElementById("maths3").innerHTML += `<p>BUT num1++ is ${num1++}</p>`;
+    </script>
+</BODY>
+</HTML>

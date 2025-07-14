@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <navbar>
+            <a href="#home">Dinner and a movie</a>
+            <a href="#register">Resgister</a>
+            <a href="#checkout">Checkout</a>
+            <a href="#orderhistory">Past orders</a>
+            <a href="#login">Log in</a>
+        </navbar>
+    </header>
+    <main>
+        <form action="/submit-checkout" method="post"></form>
+        <section class="items">
+            <h1>Cart</h1>
+            <p><a href="more">Order more</a></p>
+        </section>
+        <section class="cart-items">
+            <item>
+                <table width="100%">
+                    <tr>
+                    <td><h3>Bison Burger</h3></td>
+                    <td>11.54</td>
+                    </tr>
+                </table>
+                <div>For<br/>
+                <input type="text" name="for1" id="for1"/></div>
+                <div>Special requests<br/>
+                <textarea name="special1" id="special1"></textarea></div>
+            </item>
+            <item>
+                <table width="100%">
+                    <tr>
+                    <td><h3>Southwest Burger</h3></td>
+                    <td>10.70</td>
+                    </tr>
+                </table>
+                <div>For<br/>
+                <input type="text" name="for2" id="for2"/></div>
+                <div>Special requests<br/>
+                <textarea name="special2" id="special2"></textarea></div>
+            </item>
+        </section>
+        <section>
+            <div class="spacer"><br/><br/></div>
+        </section>
+        <section class="amount">
+                <div class="tax">Tax: $1.83</div>
+                <div class="total">Total: $24.07</div>
+                <div class="tip">Tip: <input type="number" name="tip" id="tip"/></div>
+                <div class="total">Amount to charge: $24.07</div>
+                <div class="delivery">Delivery: <select id="delivery">
+                    <option value="Theater 1">Theatre 1</option>
+                    <option value="Theater 2">Theatre 2</option>
+                    </select> Location (like table number) <input typre="text id="location"/>
+                </div>
+        </section>
+        <section>
+            <h3>Payment</h3>
+            <h4>Credit card</h4>
+            <div class="cc">
+                Number: <input type="number" name="ccno" id="ccno"/>
+                Month: <input type="number" name="ccmonth" id="ccmonth"/>
+                Year: <input type="number" name="ccyear" id="ccyear"/>
+                CVV: <input type="number" name="cccvv" id="cccvv"/>
+                <button type="submit">Place order</button>
+            </div>
+        </section>
+    </form>
+    </main>
+    <footer>
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<title>JavaScript Basics</title>
+</HEAD>
+<BODY>
+    <h1>Strings</h1>
+    <div id="fullName"></div>
+    <label>FirstName: </label>
+    <input type="text" id="firstName"><br>
+    <label>LastName: </label>
+    <input type="text" id="lastName"><br>
+    <button onclick="getFullName()">Get Full Name</button>
+
+    <script>
+        function getFullName() {
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+
+            // Using template literals to create a full name
+            let fullName = firstName + " "+ lastName
+            document.getElementById("fullName").innerHTML = `<h2>Welcome ${fullName}</h2>`;
+        }
+    </script>
+</BODY>
+</HTML>

@@ -1,0 +1,47 @@
+header {
+    background: #003366;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    font-size: 32pt;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+nav {
+    height: calc(100% - 80px); /* Adjust height based on header height */
+    width: 100px;
+    position: fixed;
+    top: 134px; /* Same as header height */
+    left: 0;
+    background: #f4f4f4;
+    padding-top: 20px;
+    border-right: 1px solid #ccc;
+}
+
+nav ul {
+    list-style-type: none !important;
+    list-style: none;
+    padding: 15px;
+}
+
+section {
+    margin-left: 100px;
+    padding: 20px;
+    padding-top: 100px; /* Add space for fixed header */
+    padding-bottom: 60px; /* for footer */
+    top: 180px;
+}
+
+footer {
+    background: #003366;
+    color: #fff;
+    padding: 0.5em;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}

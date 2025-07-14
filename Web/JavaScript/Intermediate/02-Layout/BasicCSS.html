@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="pulldown.css">
+<link rel="stylesheet" href="layout.css">
+<script src="external.js"></script>
+</HEAD>
+<BODY>
+    <header>Country information</header>
+    <nav>
+        <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Countries</a></li>
+        <li><a href="#">Statistics</a></li>
+        <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <section>
+    <h3>Tables</h3>
+    <form>
+    <p>Select a country:
+        <select name="country" onchange="highlightCountry(this.value)">
+            <option value="null">Please select one ...</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Croatia">Croatia</option>
+            <option value="Denmark">Denmark</option>
+            <option value="England">England</option>
+            <option value="Finland">Finland</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Hungary">Hungary</option>
+            <option value="Iceland">Iceland</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Italy">Italy</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="Poland">Poland</option>
+            <option value="Scotland">Scotland</option>
+            <option value="Sweden">Sweden</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States of America">United States of America</option>
+            <option value="Wales">Wales</option>
+        </select>
+        </p>
+    </form>
+    <table align="center">
+        <tr><th align="left">Country</th><th>Population</th><th align="left">Capital City</th></tr>
+        <tr><td>Australia</td><td align="right">26,974,026</td><td>Canberra</td></tr>
+        <tr><td>Austria</td><td align="right">9,113,574</td><td>Vienna</td></tr>
+        <tr><td>Belgium</td><td align="right">11,758,603</td><td>Brussels</td></tr>
+        <tr><td>Croatia</td><td align="right">3,848,160</td><td>Zagreb</td></tr>
+        <tr><td>Denmark</td><td align="right">6,002,507</td><td>Copenhagen</td></tr>
+        <tr><td>England</td><td align="right">98,380,500</td><td>London</td></tr>
+        <tr><td>Finland</td><td align="right">5,623,329</td><td>Helsinki</td></tr>
+        <tr><td>France</td><td align="right">66,650,804</td><td>Paris</td></tr>
+        <tr><td>Germany</td><td align="right">84,075,075</td><td>Berlin</td></tr>
+        <tr><td>Hungary</td><td align="right">9,632,287</td><td>Budapest</td></tr>
+        <tr><td>Iceland</td><td align="right">398,266</td><td>Reykjavik</td></tr>
+        <tr><td>Ireland</td><td align="right">5,308,039</td><td>Dublin</td></tr>
+        <tr><td>Italy</td><td align="right">59,146,260</td><td>Rome</td></tr>
+        <tr><td>Netherlands</td><td align="right">18,346,819</td><td>Amsterdam</td></tr>
+        <tr><td>Poland</td><td align="right">38,140,910</td><td>Warsaw</td></tr>
+        <tr><td>Scotland</td><td align="right">5,479,700</td><td>Edinburgh</td></tr>
+        <tr><td>Sweden</td><td align="right">10,656,633</td><td>Stockholm</td></tr>
+        <tr><td>United Kingdom</td><td align="right">69,551,332</td><td>London</td></tr>
+        <tr><td>United States of America</td><td align="right">347,275,807</td><td>Washington D.C.</td></tr>
+        <tr><td>Wales</td><td align="right">3,105,500</td><td>Cardiff</td></tr>
+    </table>
+</section>
+    <footer>
+        &copy; 2025 Country Information Portal
+    </footer>
+</BODY>
+</HTML>

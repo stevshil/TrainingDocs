@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <label for="myName">Name:</label>
+        <input type="text" id="myName" size="30"
+            autofocus
+            autocomplete="off"
+            placeholder="Enter your name"
+            required="true" /><br />
+        <label for="myEmail">Email:</label>
+        <input type="text" id="myHouseNumber" size="30"
+            placeholder="Enter your house number"
+            required="true" /><br />
+        <label for="myStreet">Street:</label>    
+        <input type="text" id="myPostCode" size="30"
+            pattern="[a-zA-Z]{1,2}\d{1,2}\s\d[a-zA-Z]{2}"
+            placeholder="Enter a UK post code" /><br />
+        <label for="myCity">City:</label>
+        <input list="countries" id="myBirthCountry" size="30"
+            placeholder="Select your country of birth" /><br />
+            <datalist id="countries">
+                <option value="England">
+                <option value="Scotland">
+                <option value="Wales">
+                <option value="N. Ireland">
+            </datalist>
+        <label for="myResidenceCountry">Country of Residence:</label>
+        <input list="countries" id="myResidenceCountry" size="30"
+            placeholder="Select your country of residence" /><br />
+            <datalist id="countries">
+                <option value="England">
+                <option value="Scotland">
+                <option value="Wales">
+                <option value="N. Ireland">
+            </datalist>
+        <input type="file" id="myPics" multiple />
+    </body>
+</html>
