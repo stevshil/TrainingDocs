@@ -8,3 +8,5 @@ Security/Mongo/data/*.json
 **/__pycache__
 **/*.pyc
 **/.pytest_cache
+Java/**/out/
+**/*.class
