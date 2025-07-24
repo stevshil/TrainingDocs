@@ -10,3 +10,5 @@ Security/Mongo/data/*.json
 **/.pytest_cache
 Java/**/out/
 **/*.class
+**/lib
+**/out
