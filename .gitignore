@@ -12,3 +12,5 @@ Java/**/out/
 **/*.class
 **/lib
 **/out
+**/.mvn
+**/target
