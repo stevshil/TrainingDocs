@@ -1,11 +1,10 @@
 // filepath: /home/steve/Documents/projects/TrainingDocs/Java/junit/TestMyTreesSets.java
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.class)
 class MyTreesSetsAssetsTest {
 
     @Test
@@ -34,21 +33,25 @@ class MyTreesSetsAssetsTest {
     }
 
     @Test
+    @Order(2)
     public void testPerson() {
         assertTrue(nick instanceof Person);
     }
 
     @Test
+    @Order(1)
     public void testPersonNameAssigned() {
         assertTrue(steve.getName() == "Steve");
     }
 
     @Test
+    @Order(4)
     public void testBeginsWithN() {
         assertTrue(folks.getNameBeginningWithN(nick));
     }
 
     @Test
+    @Order(5)
     public void testDoesNotBeginWithN() {
         assertFalse(folks.getNameBeginningWithN(steve));
     }
