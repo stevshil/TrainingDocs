@@ -15,3 +15,4 @@ Java/**/out/
 **/.mvn
 **/target
 **/.venv
+.vscode
