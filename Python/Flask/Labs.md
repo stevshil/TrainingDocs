@@ -3,6 +3,8 @@
 ## Flask as a web application
 
 * https://codingnomads.com/labs-python-flask-first-app
+* https://labex.io/tutorials/flask-getting-started-with-flask-web-framework-136334
+* https://code.visualstudio.com/docs/python/tutorial-flask
 
 ## Flask as a REST API
 
