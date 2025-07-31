@@ -43,8 +43,10 @@ def getname():
 
 @app.route("/processform", methods=["POST"])
 def processform():
-    # username=request.args.get("username")
-    username = request.form["username"]
+    # username=request.args.get("username") # If using a GET method
+    # username = request.form["username"] # If using a POST method
+    inputs = request.values.to_dict() # Covers both POST and GET
+    username = inputs["username"]
     return render_template("myform.html",myname=username)
 
 if __name__ == "__main__":
