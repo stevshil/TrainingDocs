@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body>
+        <form action="/processform" method="post">
+            Name: <input type="text" name="username" value="{{myname}}"><br>
+            <input type="submit" value="Go"><br>
+        </form>
+        {% if myname is defined %}
+        <h1>Hello {{ myname }}</h1>
+        {% endif %}
+    </body>
+</html>
