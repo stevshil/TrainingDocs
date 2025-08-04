@@ -12,6 +12,11 @@
 * https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics
 * https://developer.mozilla.org/en-US/docs/Web/CSS/Tutorials
 * https://www.w3schools.com/css/
+* https://web.dev/learn/css
+
+## Games
+
+* https://cssbattle.dev
 
 ## CSS Transforms
 
