@@ -29,6 +29,11 @@
 * More Animation - https://www.sitepoint.com/css-animation-no-javascript/
 * Open Source UI - https://uiverse.io/
 
+# Colour pickers
+
+* https://www.canva.com/colors/color-wheel/
+* https://paletton.com/
+
 ## Flexbox
 
 * https://css-tricks.com/snippets/css/a-guide-to-flexbox/

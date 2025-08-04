@@ -72,8 +72,10 @@ a:hover {
     font-weight: bolder;
     /* text-shadow: darkorange 1px 0 5px; */
     text-shadow: 
-        0px   0px  4px white,    0px  -5px  4px #FFFF33,
-        2px -10px  6px #FFDD33, -2px -15px 11px #FF8800,
+        0px   0px  4px white,    
+        0px  -5px  4px #FFFF33,
+        2px -10px  6px #FFDD33, 
+        -2px -15px 11px #FF8800,
         2px -25px 18px #FF2200 
 }
 
