@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('https://dummyjson.com/products')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Build array of minimumOrderQuantity
+                        const minOrderQuantities = data.products.map(product => product.minimumOrderQuantity);
+                        console.log(minOrderQuantities);
+
+                        const ctx = document.getElementById('myChart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'bar', // line, bubble, doughnut, polarArea, radar, scatter
+                            data: {
+                                labels: data.products.map(product => product.title),
+                                datasets: [{
+                                    label: 'Minimum Order Quantity',
+                                    data: minOrderQuantities,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+    </body>
+</html>
