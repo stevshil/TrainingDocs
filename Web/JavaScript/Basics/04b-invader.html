@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #invader {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="https://static.vecteezy.com/system/resources/previews/034/961/946/non_2x/space-invader-illustration-design-free-png.png" width="100px" height="100px" id="invader">
+
+        <script>
+            xpos=0;
+            function moveit() {
+                xpos+=10;
+                document.getElementById("invader").style.left=xpos+"px";
+                if ( xpos % 3 == 0 ) {
+                    document.getElementById("invader").style.visibility = "hidden"
+                } else {
+                    document.getElementById("invader").style.visibility = "visible"
+                }
+            }
+            
+            setInterval(moveit, 1000);
+        </script>
+    </body>
+</html>
