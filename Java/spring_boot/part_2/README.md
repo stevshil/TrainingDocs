@@ -2,6 +2,7 @@
 
 The java code is written in the **src** folder.  The structure of the folder is;
 
+```
 src
 |---main
 |     |---java
@@ -26,7 +27,7 @@ src
 |---mvnw        // Linux binary for Maven command
 |---mvnw.cmd    // Windows executable for Maven command
 |---pom.xml     // Library dependencies and Maven configuration
-
+```
 
 ## Running the application
 
