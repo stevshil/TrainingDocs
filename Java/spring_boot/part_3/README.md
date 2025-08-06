@@ -21,22 +21,45 @@ You can find all the required pom.xml dependencies at https://mvnrepository.com/
 
 The database name is in the **[application.properties](./myapp/src/main/resources/application.properties)** file in the **url** setting.
 
-The actual table is in the Java class [Tutorial.java](./myapp/src/main/java/com/tps/myapp/entity/Tutorial.java)
+The actual table is in the Java class [Book.java](./myapp/src/main/java/com/tps/myapp/entity/Book.java)
 
 Tables are separate classes, and each class defines a table.  A directory called **entity** or **entities** is normally used to contain them.
+
+Our example is a single table called Books and the definition is in [Book.java](./myapp/src/main/java/com/tps/myapp/entity/Book.java).  This example makes use of **Lombok** which creates the getter and setter methods automatically, rather than having to code it.
+
+This [Book](./myapp/src/main/java/com/tps/myapp/entity/Book.java.old) example does include the getters and setters, but using the Lombok library you can exclude creating these.
 
 ## Repository
 
 The **repository** directory contains the database class methods that will provide the CRUD interactions.  In most cases these are empty, unless you have custom actions you wish to perform, such as a search that requires a table join.
 
-[TutorialRepository](./myapp/src/main/java/com/tps/myapp/repository/TutorialRepository.java)
+[BookRepository](./myapp/src/main/java/com/tps/myapp/repository/BookRepository.java)
 
 ## Services
 
 These provide the functions behind the controllers, as seen in part 2.  This allows us to separate the logic from the endpoints and create classes of methods to return the data for the API.
 
-[testServices.java](./myapp/src/main/java/com/tps/myapp/services/testServices.java)
+[BookServices.java](./myapp/src/main/java/com/tps/myapp/services/BookServices.java)
 
 ## Controller
 
 As in part 2 the controller provides the endpoints for the service.
+
+This version has all the regular REST methods to support CRUD.
+
+For example:
+
+* Return the list of all books
+
+    ```sh
+    curl http://localhost:8080/books
+    ```
+
+* Insert a new book
+
+    ```sh
+    curl -X POST -H 'Content-Type: application/json' http://localhost:8080/books -d '{
+      "title": "Steves new book",
+      "description": "Nothing interesting in here"
+    }'
+    ```

@@ -22,95 +22,95 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tps.myapp.repository.*;
-import com.tps.myapp.services.testServices;
+import com.tps.myapp.services.BookServices;
 import com.tps.myapp.entity.*;
 import com.tps.myapp.services.*;
 
 // @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 // @RequestMapping("/api")
-public class TutorialController {
+public class BookController {
 
 	@Autowired
-	TutorialRepository tutorialRepository;
+	BookRepository bookRepository;
 
 	@Autowired
-	testServices testServices;
+	BookServices bookServices;
 
 	@SuppressWarnings("null")
-	@GetMapping("/cds")
-	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
+	@GetMapping("/books")
+	public ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) String title) {
 		try {
-			List<Tutorial> tutorials = new ArrayList<Tutorial>();
+			List<Book> books = new ArrayList<Book>();
 
 			// if (title == null)
-			// 	tutorialRepository.findAll().forEach(tutorials::add);
+			// 	bookRepository.findAll().forEach(books::add);
 			// else
-			// 	tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
-			tutorials = testServices.getAllCds(title);
+			// 	bookRepository.findByTitleContaining(title).forEach(books::add);
+			books = bookServices.getAllCds(title);
 
-			if (tutorials.isEmpty()) {
+			if (books.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 
-			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+			return new ResponseEntity<>(books, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/cds/{id}")
-	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+	@GetMapping("/books/{id}")
+	public ResponseEntity<Book> getBookById(@PathVariable("id") long id) {
+		Optional<Book> bookData = bookRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
+		if (bookData.isPresent()) {
+			return new ResponseEntity<>(bookData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@SuppressWarnings("null")
-	@PostMapping("/cds")
-	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
+	@PostMapping("/books")
+	public ResponseEntity<Book> createBook(@RequestBody Book book) {
 		try {
-			Tutorial _tutorial = tutorialRepository
-					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
-			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
+			Book _book = bookRepository
+					.save(new Book(book.getTitle(), book.getDescription(), false));
+			return new ResponseEntity<>(_book, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@PutMapping("/cds/{id}")
-	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+	@PutMapping("/books/{id}")
+	public ResponseEntity<Book> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
+		Optional<Book> bookData = bookRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			Tutorial _tutorial = tutorialData.get();
-			_tutorial.setTitle(tutorial.getTitle());
-			_tutorial.setDescription(tutorial.getDescription());
-			_tutorial.setPublished(tutorial.isPublished());
-			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+		if (bookData.isPresent()) {
+			Book _book = bookData.get();
+			_book.setTitle(book.getTitle());
+			_book.setDescription(book.getDescription());
+			_book.setPublished(book.isPublished());
+			return new ResponseEntity<>(bookRepository.save(_book), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@DeleteMapping("/cds/{id}")
-	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
+	@DeleteMapping("/books/{id}")
+	public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") long id) {
 		try {
-			tutorialRepository.deleteById(id);
+			bookRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@DeleteMapping("/cds")
-	public ResponseEntity<HttpStatus> deleteAllTutorials() {
+	@DeleteMapping("/books")
+	public ResponseEntity<HttpStatus> deleteAllBooks() {
 		try {
-			tutorialRepository.deleteAll();
+			bookRepository.deleteAll();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -118,15 +118,15 @@ public class TutorialController {
 
 	}
 
-	@GetMapping("/cds/published")
-	public ResponseEntity<List<Tutorial>> findByPublished() {
+	@GetMapping("/books/published")
+	public ResponseEntity<List<Book>> findByPublished() {
 		try {
-			List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
+			List<Book> books = bookRepository.findByPublished(true);
 
-			if (tutorials.isEmpty()) {
+			if (books.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+			return new ResponseEntity<>(books, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

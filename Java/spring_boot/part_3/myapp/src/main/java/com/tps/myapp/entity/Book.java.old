@@ -4,8 +4,8 @@ package com.tps.myapp.entity;
 import jakarta.persistence.*; // for Spring Boot 3
 
 @Entity
-@Table(name = "tutorials")
-public class Tutorial {
+@Table(name = "books")
+public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,11 +20,11 @@ public class Tutorial {
 	@Column(name = "published")
 	private boolean published;
 
-	public Tutorial() {
+	public Book() {
 
 	}
 
-	public Tutorial(String title, String description, boolean published) {
+	public Book(String title, String description, boolean published) {
 		this.title = title;
 		this.description = description;
 		this.published = published;
