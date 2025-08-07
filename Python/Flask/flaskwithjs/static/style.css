@@ -1,0 +1,58 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Header styling */
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Main section layout */
+main {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Left and right boxes */
+#left-box,
+#right-box {
+  width: 48%;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#number {
+  text-align: center;
+  color: red;
+}
+
+#clock {
+  text-align: center;
+}
+
+/* Optional: Add some responsiveness */
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+
+  #left-box,
+  #right-box {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
