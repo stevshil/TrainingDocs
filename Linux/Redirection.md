@@ -45,6 +45,8 @@ ls -lR / >good_output
 * Where do the errors go, and where is the output?
 * Would this be of any use to us in capturing how the compilation played out if there were errors?
 
+An animation of the above is in PPT form [](PPT/Redirection.pptx)
+
 What about;
 
 ```sh
