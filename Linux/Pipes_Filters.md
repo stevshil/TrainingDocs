@@ -14,7 +14,7 @@ Filter commands are those which accept input from **stdin**.  These can be ident
 
 The following diagram shows the flow through a pipeline:
 
-![alt text](images/pipes.png)
+![alt text](assets/images/pipes.png)
 
 Courtesy of https://docs.ycrc.yale.edu/PIL/04-pipefilter/
 

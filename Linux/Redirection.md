@@ -10,7 +10,7 @@ Every process in Linux is given 3 **file descriptors** (also called file handles
 
 The default set up for these **file descriptors** are shown below;
 
-![alt text](images/redirect.png)
+![alt text](assets/images/redirect.png)
 
 We can see that by default **standard input** shown as **#0 stdin**, file descriptor zero comes from the **keyboard**.  The process has 2 output descriptors, that by default go to the terminal screen;
 
@@ -45,7 +45,9 @@ ls -lR / >good_output
 * Where do the errors go, and where is the output?
 * Would this be of any use to us in capturing how the compilation played out if there were errors?
 
-An animation of the above is in PPT form [](videos/redirect2.mkv)
+An animation of the above is in PPT form [Redirection animation](assets/videos/redirect2.mp4) or use the embedded video below;
+
+<video src="assets/videos/redirect2.mp4" width="320" height="240" controls></video>
 
 What about;
 
