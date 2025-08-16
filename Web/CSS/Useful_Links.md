@@ -40,3 +40,10 @@
 * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox
 * https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox
 * A cool interactive guide - https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/
+
+## Cool CSS
+
+* https://uiverse.io/
+* https://www.sitepoint.com/css-animation-no-javascript/
+* https://animejs.com/
+* https://codepen.io/brundolf/pen/gRaREv

@@ -23,5 +23,6 @@
             "username": "postgres",
             "password": "secret123"
         }
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "disabled"
 }
