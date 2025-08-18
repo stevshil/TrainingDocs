@@ -53,3 +53,8 @@ When working with ML modelling you will need to separate out your data into;
     * A different subset of data to the Test data to train the model on.  Normally this set may be larger than the test.
 * Actual (production)
     * The entire data which predicitions will be taken from based on your prediction **model**.
+
+## Some help and references
+
+* [Useful links to help learn data and ML with Pandas](../Useful_links.md)
+* [Useful dataset locations](../Useful_Dataset_Locations.md)
