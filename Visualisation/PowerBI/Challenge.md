@@ -131,3 +131,9 @@ Then click **Close** & **Apply**.
     * *Consistency:* Numbers sum across visuals; filters don’t contradict titles. 
     * **Clarity:** Every visual answers a distinct sub‑question; remove any redundant chart. 
     * **Simplicity:** Ensure your dashboard is not cluttered. Make use of separate pages/tabs, but ensure they make sense and the order is correct.
+
+---
+
+# Power BI useful links and help
+
+* [Useful Links](Useful_links.md)
