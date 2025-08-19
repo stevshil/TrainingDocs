@@ -136,4 +136,4 @@ Then click **Close** & **Apply**.
 
 # Power BI useful links and help
 
-* [Useful Links](Useful_links.md)
+* [Useful Links](Useful_Links.md)
