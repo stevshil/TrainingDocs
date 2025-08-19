@@ -5,6 +5,7 @@ Working in teams of 3.
 In this challenge we want you to find 2 - 3 datasets that will allow you to create a hypotheses against the datasets to be proven from undergoing some data analysis.
 
 Ideally 1 or 2 of the datasets should have missing data, so that you can clean the data by either;
+
     * Removing it
     * Applying interpolation
     * Or other solutions - please explain
@@ -18,6 +19,7 @@ If possible you should attempt a merge of the data sets, for example having valu
 There are plenty of other sites available for data, and in Python you also have access to the Yahoo Finance module called yFinance which provide data 15 minutes behind actual.
 
 You should create a Jupyter Notebook that can guide us through your process of;
+
     * Identifying the datasets
         * Textual mark up stating what datasets you used and their URLs or library inclusion
     * Your hypothesis you wish to test
@@ -47,6 +49,7 @@ Take look at the ML features within Python.  This is specifically the sklearn mo
 For predictions you will want to review the **Getting Started** and then **Regressions**.
 
 When working with ML modelling you will need to separate out your data into;
+
 * Test
     * A subset of the whole data to test your prediction model against.
 * Training

@@ -3,17 +3,20 @@
 ## Pandas and Plotting
 
 **Pandas**
+
     * The official API documentation - https://pandas.pydata.org/docs/reference/index.html
     * The official documentation - https://pandas.pydata.org/docs/
         * Includes tutorials
 
 **Numpy**
+
     * The documentation - https://numpy.org/doc/stable/reference/
     * Tutorials
         * https://numpy.org/doc/stable/user/quickstart.html
         * https://www.w3schools.com/python/numpy/default.asp
 
 **Seaborn**
+
     * Tutorial - https://seaborn.pydata.org/tutorial.html
     * Documentation on the API - https://seaborn.pydata.org/api.html
     * Example graphs
@@ -22,6 +25,7 @@
             * Also contains descriptions, so more a Tutorial
 
 **Matplotlib**
+
     * Example graphs
         * https://matplotlib.org/stable/gallery/index.html
         * https://python-graph-gallery.com/
