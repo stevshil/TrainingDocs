@@ -7,3 +7,10 @@
 * [DAX Language](https://dax.guide)
 * [DAX for beginners](https://www.datacamp.com/tutorial/power-bi-dax-tutorial-for-beginners)
 * [DAX intro video](https://www.youtube.com/watch?v=vcijg0gUXSg)
+
+# Story Telling
+
+* https://online.hbs.edu/blog/post/data-storytelling
+* https://www.thoughtspot.com/data-trends/best-practices/data-storytelling
+* https://s3.amazonaws.com/files.commons.gc.cuny.edu/wp-content/blogs.dir/20521/files/2022/09/Knaflic-storytelling-data.pdf
+* https://medium.com/learning-data/the-art-of-data-storytelling-d6807c4d565e
