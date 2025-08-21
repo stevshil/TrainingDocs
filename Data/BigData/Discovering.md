@@ -6,9 +6,9 @@ The term **Big Data** relates to data that is too big to be stored on a single s
 
 Beyond **[Petabytes](https://www.idtech.com/blog/orders-of-magnitude-digital-data)**
 
-* Exabyte - 10^18^
-* Zettabyte - 10^21^
-* Yottabyte - 10^24^
+* Exabyte - 10<sup>18</sup>
+* Zettabyte - 10<sup>21</sup>
+* Yottabyte - 10<sup>24</sup>
 
 Systems such as;
 
