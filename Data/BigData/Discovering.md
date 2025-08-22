@@ -26,21 +26,31 @@ The choice of database is governed by the CAP theorem;
 
 The choice is normally based on 2 of the above.
 
-![alt text](images/scalability-cap-theorem1.webp)
+---
+
+![CAP Theorem](images/scalability-cap-theorem1.webp)
 
 > CAP Theorem diagram
+
+---
 
 Agents run on the servers to perform actions requested by users.  These agents communicate with each other to gather the required data for queries so that it can be compiled into a valid dataset to be returned to the user quickly.
 
 The splitting of data across servers and disks is known as **sharding** (a form of partitioning of the data, but across servers, rather than just disk).  This splitting of data also allows for speed of data insert as well as reading and the resilience of the data is performed by ensuring that we always have 1 server that can become redundant.
 
-![alt text](images/sharding_vs_partitioning.png)
+---
+
+![Sharding vs Partitioning](images/sharding_vs_partitioning.png)
 
 > Partitioning vs Sharding diagram
 
-![alt text](images/DB-Shard-Pic-1-e1513014455288.png)
+---
 
-> Sharding diagram
+![Sharding in action](images/DB-Shard-Pic-1-e1513014455288.png)
+
+> Sharding in action
+
+---
 
 In the **Sharding diagram** we see that the **Tracking Table** is the virtual view of the data, but in reality that data is spread across different machines, and the agents on those systems will provide the complete view to the **requesting** agent.
 
@@ -54,7 +64,27 @@ Systems are now categorised into;
 
 Increasing in size as we go down the list.
 
-## The task
+## A typical big data architecture
+
+Large data systems require a structured architecture to manage disk and servers, and provide an interfaces to enable different data users to access the data in the way they need.
+
+<center>
+
+![Azure Synapse Analytics](images/cdmutilv2.webp)
+Azure Synapse Analytics Architecture Diagram
+
+---
+
+![Spark Architecture](images/sparkArch.png)
+Spark Architecture Diagram
+
+---
+
+![pySpark Architecture](images/pySparkArch.png)
+PySpark Architecture Diagram
+</center>
+
+# The task
 
 You will divide into teams, and be given a subject area relating to big data to research and present back.
 
