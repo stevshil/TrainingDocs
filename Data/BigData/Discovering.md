@@ -84,6 +84,26 @@ Spark Architecture Diagram
 PySpark Architecture Diagram
 </center>
 
+## Making data quickly available
+
+The engineering process of making data available, mean we need a product pipeline.  This automates our manual process.  So you might have been thinking that Python isn't for me, but we need to automate the process of;
+
+* Cleaning
+* Transforming
+* Providing
+
+To produce a data product that can be consumed by our clients;
+
+* Business Analysts
+* Data Scientists
+* Developers
+
+Data is now a commodity that can be sold.  The better our product the more people are prepared to pay.
+
+Map reduce is one task that allows us to divide tasks and divide into smaller parallel tasks.  Map reduce example can be found [here](../DataEng/README.md).
+
+An ETL process can be found [here](../DataEng/DataEngTask2-ETL.md).
+
 # The task
 
 You will divide into teams, and be given a subject area relating to big data to research and present back.
