@@ -100,6 +100,10 @@ To produce a data product that can be consumed by our clients;
 
 Data is now a commodity that can be sold.  The better our product the more people are prepared to pay.
 
+To automate our product we create data pipelines;
+
+![Data pipeline](images/data-engineering-pipeline-1.png)
+
 Map reduce is one task that allows us to divide tasks and divide into smaller parallel tasks.  Map reduce example can be found [here](../DataEng/README.md).
 
 An ETL process can be found [here](../DataEng/DataEngTask2-ETL.md).
