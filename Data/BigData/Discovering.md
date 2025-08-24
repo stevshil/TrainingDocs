@@ -130,3 +130,64 @@ The subject areas are;
 * Data Lake House
     * What is it, what systems are there to store the data, and what software can be used to work with the data
     * What are Data Lake houses being used for.  Who is using them and what for?
+
+
+# Databricks and big data
+
+* Create a new free Databricks account.
+    * https://www.databricks.com/
+        * Select **Try Databricks**, button top right
+    * Click **Continue with Express Setup**
+    * Add your personal Email, and then go to your Email to complete the process
+* Under the SQL section try out a SQL query
+    * On the left of the query window you'll find the **Catalog**
+        * There should be a **samples** folder with various sample databases
+        * Try out a query on the **bakehouse**
+            * You can see the tables by expanding **bakehouse**
+            * Example
+
+            ```
+            SELECT * from samples.bakehouse.media_customer_reviews 
+            ```
+        * Try out some other SQL commands
+        * See if you can create a JOIN
+* Click **New** button at the top left
+    * Select **Notebook**
+    * Import the bakehouse sales_customers
+
+    ```
+    mydf = spark.sql("SELECT * FROM samples.bakehouse.sales_customers")
+    ```
+
+    * Click on the dropdown arrow under the code frame and you'll see the dataframe described.
+    * Show the top 5 rows
+
+    ```
+    display(mydf.head(5))
+    ```
+
+    * Show only the columns of firstname, lastname and state
+
+    ```
+    display(mydf.select("first_name","last_name","state"))
+    ```
+
+    * Show only those in Florida
+
+    ```
+    FLOnly = mydf.filter(mydf.state == "Florida")
+    display(FLOnly)
+    ```
+
+    * Look up how to do the following;
+        * Group by **state** and **count** the number of people
+        * HINT: df.groupby(...).count()
+    * Sort the output by state
+        * HING: df.sort(...)
+    * Then sort descending
+    * Find all the **distinct** states
+    * Count how many males to females there are in the data set
+    * Get the count of men per country and women per country
+        * That is you should have a value for women in Japan and men in Japan, and for each country
+    * Find out how to run a SQL statement to return a dataframe
+    * Try using Seaborn and Matplotlib to show something interesting about the dataset
