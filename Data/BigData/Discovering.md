@@ -131,8 +131,27 @@ The subject areas are;
     * What is it, what systems are there to store the data, and what software can be used to work with the data
     * What are Data Lake houses being used for.  Who is using them and what for?
 
+# Snowflake and Databricks
 
-# Databricks and big data
+These are 2 cloud based services for storing big data.  Data is charged per usage normally per second, or per credits.
+
+* Databricks
+    * Pricing policy
+        * https://www.databricks.com/product/pricing
+        * Charged per second
+    * Interface
+        * Web based
+        * SQL
+        * Python notebooks
+* Snowflake
+    * Pricing policy
+        * https://www.snowflake.com/en/pricing-options/
+        * Charged by credits, which is per 1 minute of compute power.
+    * Interface
+        * Web based
+        * SQL
+
+# Databricks and big data exercsise
 
 * Create a new free Databricks account.
     * https://www.databricks.com/
@@ -151,30 +170,35 @@ The subject areas are;
             ```
         * Try out some other SQL commands
         * See if you can create a JOIN
+
+        The key thing to remember is that you're querying a database that is spread across multiple disks and servers.
+
 * Click **New** button at the top left
     * Select **Notebook**
     * Import the bakehouse sales_customers
 
-    ```
+    ```python
     mydf = spark.sql("SELECT * FROM samples.bakehouse.sales_customers")
     ```
+
+    You'll notice a slight different in the creation of a dataframe, through the use of the **spark** module.  Like Pandas, **spark** has an import mechanism for reading in data in many ways.  It is it's own API, but has similarities to Pandas.
 
     * Click on the dropdown arrow under the code frame and you'll see the dataframe described.
     * Show the top 5 rows
 
-    ```
+    ```python
     display(mydf.head(5))
     ```
 
     * Show only the columns of firstname, lastname and state
 
-    ```
+    ```python
     display(mydf.select("first_name","last_name","state"))
     ```
 
     * Show only those in Florida
 
-    ```
+    ```python
     FLOnly = mydf.filter(mydf.state == "Florida")
     display(FLOnly)
     ```
@@ -191,3 +215,35 @@ The subject areas are;
         * That is you should have a value for women in Japan and men in Japan, and for each country
     * Find out how to run a SQL statement to return a dataframe
     * Try using Seaborn and Matplotlib to show something interesting about the dataset
+
+## Other useful spark methods
+
+Here are some other examples of spark commands;
+
+* Loading data to a file from a URL
+
+    > NOTE: This requires access to the file system.  Databricks provides security to prevent access to files.
+
+    ```python
+    dbutils.fs.cp("https://tinyurl.com/tse-socks", "dbfs:/mysocks.csv")
+    ```
+
+* Reading from a CSV file on the server;
+
+    ```python
+    socksDF = spark.read.format("csv").option("header", "true").load("/mysocks.csv")
+    ```
+
+* Writing your dataframe to the file system;
+
+    ```python
+    socksDF.write.saveAsTable("mysocks")
+    ```
+
+* Embedded SQL in notebook
+
+    ```sql
+    %sql
+
+    SELECT * FROM samples.bakehouse.sales_customers;
+    ```
