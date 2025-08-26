@@ -105,3 +105,21 @@ This is to gain insights into how well we thought we did during the sprint, and 
 * What we shouldn't do again
 
 * Liked, Learned, Lacked, Longed for
+
+## Changes to the schedule
+
+Not all agile systems use the exact same techniques or timings, but the majority are still adhered to, such as communication with the client and working out the backlog priority.
+
+For example Amazon and Google do not perform sprint releases, but release as soon as the item is ready.  Instead they measure their sprints based on the number of tasks they wanted to deliver during a 2 week period verses the actual number of tasks released.
+
+These systems have a lot of automation and well written tests to ensure that their production environment does not break.
+
+How often, do you see Amazon web services, or their shopping site being unavailable?
+
+How many releases per day do you think Amazon performs?
+
+<details>
+In 2021:
+
+Werner Vogels reported that Amazon achieves 50M deployments a year across their dev, test, and production environments. That's 136k deployments per day or about 1.6 per second.
+</details>
