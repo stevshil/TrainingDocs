@@ -39,16 +39,21 @@ The manifesto defines
 
 > That is, while there is value in the items on the right, we value the items on the left more.
 
-## User stories
+## The product owner
+
+* Identifies the customers needs and prioritises the requirements of the client
+* A backlog is then created of these requirements
+
+### User stories
 
 User stories define requirements based on the user's needs.  These needs are based on how they wish to interact with the software and how their business operates.
 
-### Exercise
+#### Exercise
 
-* Write me a user story for either;
+* Write me 10 user stories for either;
     * A shopping cart
         * This is the part just before you pay
-    * To create an ETL pipeline to clean and filter data from 3 different sources;
+    * or to create an ETL pipeline to clean and filter data from 3 different sources;
         * Yahoo Finance Data
         * FTSE stocks information and news
         * The BBC news feeds
@@ -63,12 +68,12 @@ User stories define requirements based on the user's needs.  These needs are bas
     * As a user I want to
     * Acceptance criteria
 * Capturing the needs and outcomes
-	
-## The product owner
 
-* Identifies the customers needs and prioritises the requirements of the client
-* A backlog is then created of these requirements
-* The backlog is then prioritised using Sprints (of 2 weeks, sometimes 4, sometimes none) to meet the client needs based on the product owner's knowledge
+### Sizing and estimates
+
+The product owner will then work with the team to size the tasks in to manageable sprints.
+
+* The backlog is then prioritised using Sprints (of 2 weeks, sometimes 4, sometimes none) to meet the client needs based on the product owner's knowledge.
 * Sprint planning requires sizing of tasks
     * As a team we may be working across teams with different capabilities and skills
     * Sizes are arbitrary values which do not adhere to time, but complexity of a task
@@ -77,8 +82,7 @@ User stories define requirements based on the user's needs.  These needs are bas
         * Poker = Numbering system where cards are used with numbering system
     * An Epic is a task size that is too complex or long and needs to be broken into smaller sub-tasks.  E.g. in Poker 13 is normally considered an Epic.
 
-
-### Exercise
+#### Exercise
 
 * Using your shopping cart or data ETL exercise, identify the size of these tasks.  The product will be created in products that your team already has experience in.
 * Identify which value will be considered as an Epic.
