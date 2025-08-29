@@ -1,5 +1,9 @@
 # Useful links for learning data
 
+## Story Telling With Data Example
+
+[Example Story](https://drive.google.com/file/d/18KzwTACL8lwDlmA3JtdOcAcILqL3hsG1/view?usp=drive_link)
+
 ## Pandas and Plotting
 
 **Pandas**
