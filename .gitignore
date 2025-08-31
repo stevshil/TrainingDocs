@@ -16,3 +16,4 @@ Java/**/out/
 **/target
 **/.venv
 .vscode
+**/coverage

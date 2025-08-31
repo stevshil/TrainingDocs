@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage --verbose"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node-fetch": "^2.6.13",
+    "jest": "^30.1.1",
+    "node-fetch": "^2.6.7",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "http": "^0.0.1-security"
+  }
+}
