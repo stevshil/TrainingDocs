@@ -24,4 +24,10 @@ describe('SWAPI Films API', () => {
         const data = await swapi.getfilm(0);
         expect(data).toBeNull();
     })
+
+    test('Check if call was made', async () => {
+        jest.spyOn(swapi,'getfilm');
+        swapi.getfilm('2');
+        expect(swapi.getfilm).toHaveBeenCalledWith('2'); // Change to 3 to demonstrate fail
+    })
 });
