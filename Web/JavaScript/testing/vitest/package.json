@@ -7,10 +7,12 @@
   },
   "scripts": {
     "test": "vitest",
+    "tests": "vitest --coverage.enabled=true --ui",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@vitest/coverage-istanbul": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "http": "^0.0.1-security",
     "node-fetch": "^3.3.2"
   }
