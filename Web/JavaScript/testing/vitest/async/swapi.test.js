@@ -9,7 +9,7 @@ describe('SWAPI', () => {
     })
 
     test('should contain a film with "Empire Strikes" in the title', async () => {
-        const swapi  = new Swapi();
+        // const swapi  = new Swapi();
         const data = await swapi.getfilms();
         const found = JSON.stringify(data).includes('Empire Strikes');
         expect(found).toBe(true);

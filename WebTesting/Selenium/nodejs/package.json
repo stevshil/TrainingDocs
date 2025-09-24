@@ -1,0 +1,17 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "* NodeJS & Selenium     * https://www.browserstack.com/guide/selenium-nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node google.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "chromedriver": "^140.0.3",
+    "selenium-webdriver": "^4.35.0"
+  }
+}

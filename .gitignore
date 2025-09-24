@@ -17,3 +17,6 @@ Java/**/out/
 **/.venv
 .vscode
 **/coverage
+**/chrome-linux64
+**/*.zip
+**/software
