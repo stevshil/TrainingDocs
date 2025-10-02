@@ -29,4 +29,8 @@ public class Register {
         return thisName;
     }
 
+    public void setTaxRate(double amount) {
+        taxCalc.setTaxRate(amount);
+    }
+
 }

@@ -8,4 +8,8 @@ public class IncomeTaxCalculator implements TaxCalculator {
         System.out.println("Tax Rate: "+taxRate);
         return amount * taxRate;
     }
+
+        public void setTaxRate(double amount) {
+        this.taxRate = amount;
+    }
 }
