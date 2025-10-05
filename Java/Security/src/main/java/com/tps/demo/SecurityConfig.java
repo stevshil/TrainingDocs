@@ -45,8 +45,8 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        // String myKey = genkey();
-        String myKey = "b7f8c3a2d1e4f5b6a9c0d3e2f1a4b5c6";
+        // String myKey = "b7f8c3a2d1e4f5b6a9c0d3e2f1a4b5c6";
+        String myKey = genkey();
         String secret = myKey; // Must be 32 bytes
         SecretKey key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 
@@ -73,6 +73,7 @@ public class SecurityConfig {
     }
 
     private static String genkey() {
+        // Generate a 32 byte key each time the app starts
         byte[] key = new byte[32]; // 256 bits = 32 bytes
         new SecureRandom().nextBytes(key);
         String base64Key = Base64.getEncoder().encodeToString(key);
