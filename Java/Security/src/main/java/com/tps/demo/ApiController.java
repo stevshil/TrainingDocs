@@ -20,4 +20,9 @@ public class ApiController {
     public String admin() {
         return "Welcome, admin!";
     }
+
+    @GetMapping("/user")
+    public String user() {
+        return "Welcome, user!";
+    }
 }

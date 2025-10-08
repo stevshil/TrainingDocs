@@ -1,5 +1,9 @@
 package com.tps.demo;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +24,8 @@ import java.util.Date;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +37,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/hello").permitAll()
                 .requestMatchers("/secured").authenticated()
+                .requestMatchers("/user").hasRole("USER")
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -53,7 +60,8 @@ public class SecurityConfig {
         String token = Jwts.builder()
                 .setSubject("1234567890")
                 .claim("name", "John Doe")
-                .claim("roles", new String[]{"ADMIN"})
+                // .claim("roles", new String[]{"ADMIN"}) // Does not work
+                .claim("roles", new String[]{"ROLE_ADMIN"}) // Must have ROLE_ prefix
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 3600_000)) // 1 hour
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -69,6 +77,16 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         // Optional: customize authorities extraction here
+        // The below ensures that the roles from the "roles" claim are used as authorities so that hasRole can find them
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+        List<String> roles = jwt.getClaimAsStringList("roles"); // Extract "roles" claim
+        if (roles == null) roles = Collections.emptyList();
+
+        return roles.stream()
+            .map(SimpleGrantedAuthority::new) // If roles already have "ROLE_" prefix
+            .collect(Collectors.toList());
+        });
+        
         return converter;
     }
 
