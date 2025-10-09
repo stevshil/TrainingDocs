@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "helmet-csp": "^4.0.0"
+  },
+  "name": "helmet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "basicweb.js",
+  "scripts": {
+    "basic": "node basicweb.js",
+    "helmet": "node basichelmet.js",
+    "secure": "node withhelment.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
