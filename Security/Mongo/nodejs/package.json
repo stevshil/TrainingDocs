@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "mongodb": "^6.7.0",
+    "tls": "^0.0.1"
+  }
+}
