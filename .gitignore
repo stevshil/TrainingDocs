@@ -20,3 +20,4 @@ Java/**/out/
 **/chrome-linux64
 **/*.zip
 **/software
+**/allure-results

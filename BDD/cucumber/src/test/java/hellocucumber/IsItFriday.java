@@ -13,4 +13,12 @@ class IsItFriday {
             return "Nope";
         }
     }
+
+    static int fridayNum(String today) {
+        if (today == "Friday") {
+            return 5;
+        } else {
+            return 0;
+        }
+    }
 }
