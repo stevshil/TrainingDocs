@@ -1,0 +1,15 @@
+services:
+  books:
+    build:
+      context: .
+    image: books:1.0
+    environment:
+      DBUSER: admin
+      DBPASS: pass
+    ports:
+      - 8090:8080
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=secret123
