@@ -21,3 +21,6 @@ Java/**/out/
 **/*.zip
 **/software
 **/allure-results
+lab.env
+llm-settings/torch
+**/LLMs/**/torch

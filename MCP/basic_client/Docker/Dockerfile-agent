@@ -1,0 +1,4 @@
+FROM python:3.13
+WORKDIR /app/mcp-architecture
+RUN pip install fast-agent-mcp==0.3.15
+ENTRYPOINT ["bash"]

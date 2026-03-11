@@ -1,0 +1,1 @@
+docker run --rm -it -v "$PWD"/LabFiles:/app -p 6274:6274 -w /app/mcp-architecture python:3.13 bash
