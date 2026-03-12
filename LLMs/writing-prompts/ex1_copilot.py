@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from Copilot import Copilot
 
 # Load environment variables from .env file
-load_dotenv('lab.env')
+load_dotenv('../lab.env')
 
 client = Copilot()
 

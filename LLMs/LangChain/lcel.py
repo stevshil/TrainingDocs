@@ -7,7 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv('lab.env')
+load_dotenv('../lab.env')
 
 # OpenAI chat model
 openai_llm = ChatOpenAI(model="gpt-4")

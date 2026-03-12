@@ -10,7 +10,7 @@ from typing import List
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv('lab.env')
+load_dotenv('../lab.env')
 
 # Define output schema
 class AnalysisResult(BaseModel):

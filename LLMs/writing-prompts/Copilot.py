@@ -18,7 +18,7 @@ def to_object(data):
 
 
 class Copilot:
-    def __init__(self, env_file="lab.env"):
+    def __init__(self, env_file="../lab.env"):
         load_dotenv(env_file)
         self.github_token = os.getenv("GITHUB_TOKEN")
         self.url = "https://models.inference.ai.azure.com/chat/completions"

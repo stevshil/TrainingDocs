@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # Requires login to Hugging face before use
 # huggingface-cli login
 
-load_dotenv('lab.env')
+load_dotenv('../lab.env')
 hf_token = os.getenv("HF_TOKEN")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

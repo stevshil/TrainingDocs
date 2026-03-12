@@ -24,3 +24,4 @@ Java/**/out/
 lab.env
 llm-settings/torch
 **/LLMs/**/torch
+**/.deepeval*

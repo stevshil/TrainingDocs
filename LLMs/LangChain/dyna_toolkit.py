@@ -7,7 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from dotenv import load_dotenv
 
-load_dotenv("lab.env")
+load_dotenv("../lab.env")
 
 # 1. Connect to DB
 db = SQLDatabase.from_uri("sqlite:///data.db")
