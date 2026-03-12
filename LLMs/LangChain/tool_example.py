@@ -96,4 +96,4 @@ result = chain.invoke({
     "input": f"Analyze this data:\n{combined_data}"
 })
 
-print(result)
+print(result.summary)
