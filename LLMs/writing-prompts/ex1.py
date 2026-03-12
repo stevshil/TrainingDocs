@@ -19,17 +19,17 @@ def generate_response(prompt, max_length=100):
     try:
         messages = [
             # To return JSON message format in response at least 1 message must contain JSON.
-            # {"role": "system", "content": "You are a helpful product recommendation assistant. Returning JSON output."},
-            {"role": "system", "content": "You are a helpful product recommendation assistant."},
+            {"role": "system", "content": "You are a helpful product recommendation assistant. Returning JSON output."},
+            # {"role": "system", "content": "You are a helpful product recommendation assistant."},
             {"role": "user", "content": prompt}
         ]
         
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=messages,
-            max_tokens=max_length #,
+            max_tokens=max_length,
             # Uncomment below if you want JSON formatted messages
-            # response_format={"type": "json_object"}
+            response_format={"type": "json_object"}
         )
         print(f"RESPONSE: {response}")
         return response.choices[0].message.content
