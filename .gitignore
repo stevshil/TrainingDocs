@@ -25,3 +25,4 @@ lab.env
 llm-settings/torch
 **/LLMs/**/torch
 **/.deepeval*
+Git/Non-repo
