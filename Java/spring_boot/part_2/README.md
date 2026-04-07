@@ -57,7 +57,7 @@ To create an endpoint we need to create a new class.  These classes will be auto
     mkdir controllers
     ```
 2. Create a new Java class file called **SimpleEndPoint.java**
-    * The final class code is [here](../myapp/src/main/java/com/tps/myapp/controllers/SimpleEndPoint.java)
+    * The final class code is [here](./myapp/src/main/java/com/tps/myapp/controllers/SimpleEndPoint.java)
     * You'll notice in the code a commented line which would allow you to write the actions directly in the controller without a service layer.
 3. The controllers rely on services, which are methods that will generally retrieve data from our data source.  This follows an MVC (Model View Controller) method of design, allowing us to change our Model layer, but retain the services as a consistent way of providing data to the controller.
 
