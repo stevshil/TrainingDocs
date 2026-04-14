@@ -32,7 +32,8 @@ During this exercise you should make sure you cover the following essential tags
 <img>
 ```
 
-**Tables**
+**Tables**Tables
+```
 <table>
 <thead>, <tbody>
 <tr>, <th>, <td>
