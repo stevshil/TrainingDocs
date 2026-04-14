@@ -1,0 +1,234 @@
+body {
+  font-size: 14pt;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  color: purple;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+a:visited {
+  color: red;
+}
+
+.table {
+	display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.col-left {
+  flex:  0 0 25%;         /* Quarter of page width */
+  min-height: 150px;       /* makes the box bigger than the text */
+  padding: 10px;           /* adds breathing room */
+  background-color: white;
+  border: 1px solid white;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: 0.7s ease;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
+              rgba(0, 0, 0, 0.12) 0px 4px 6px,
+              rgba(0, 0, 0, 0.17) 0px 12px 13px,
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.col-right {
+  flex:  1;         /* Quarter of page width */
+  min-height: 150px;       /* makes the box bigger than the text */
+  padding: 20px;           /* adds breathing room */
+  background-color: white;
+  border: 1px solid white;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: 0.7s ease;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
+              rgba(0, 0, 0, 0.12) 0px 4px 6px,
+              rgba(0, 0, 0, 0.17) 0px 12px 13px,
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.form-col-left {
+  flex:  0 0 25%;         /* Quarter of page width */
+  padding: 10px;           /* adds breathing room */
+  background-color: white;
+  border: 1px solid white;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: 0.7s ease;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
+              rgba(0, 0, 0, 0.12) 0px 4px 6px,
+              rgba(0, 0, 0, 0.17) 0px 12px 13px,
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.form-col-right {
+  flex:  1;         /* Quarter of page width */
+  padding: 20px;           /* adds breathing room */
+  background-color: white;
+  border: 1px solid white;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: 0.7s ease;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
+              rgba(0, 0, 0, 0.12) 0px 4px 6px,
+              rgba(0, 0, 0, 0.17) 0px 12px 13px,
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+/* Import a nice modern font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+.fancy-input {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 14px 18px;
+  width: 280px;
+
+  background: #ffe9bd;
+  border: none;
+  border-radius: 12px;
+
+  /* Outer + inner shadow for a lifted, soft 3D effect */
+  box-shadow:
+    4px 4px 12px rgba(0, 0, 0, 0.12),
+    -4px -4px 12px rgba(255, 255, 255, 0.9);
+
+  transition: all 0.25s ease;
+}
+
+.fancy-input:focus {
+  outline: none;
+  box-shadow:
+    6px 6px 16px rgba(0, 0, 0, 0.18),
+    -6px -6px 16px rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+}
+
+.fancy-textarea {
+  width: 90%;
+}
+
+
+.fancy-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #333;
+
+  background: #acfff5;
+  border-radius: 14px;
+
+  box-shadow:
+    6px 6px 16px rgba(0,0,0,0.15),
+    -6px -6px 16px rgba(255,255,255,0.9);
+
+  transition: all 0.25s ease;
+}
+
+.fancy-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    8px 8px 20px rgba(0,0,0,0.18),
+    -8px -8px 20px rgba(255,255,255,1);
+}
+
+.fancy-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 10px rgba(0,0,0,0.15),
+    inset -4px -4px 10px rgba(255,255,255,0.9);
+}
+
+.gradient-3d-btn {
+  display: inline-block;
+  padding: 14px 34px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+
+  background: linear-gradient(135deg, #ff6bcb, #845ef7, #5c7cfa);
+  background-size: 300% 300%;
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.25),
+    inset 0 0 0 rgba(255,255,255,0);
+
+  animation: gradientFlow 4s ease infinite;
+  transition: all 0.25s ease;
+}
+
+.gradient-3d-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.3),
+    inset 0 0 12px rgba(255,255,255,0.3);
+}
+
+.gradient-3d-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* MOBILE FIX FOR TOP-LEVEL COLUMNS */
+@media (max-width: 768px) {
+
+  /* Target ONLY rows that contain columns */
+  .table > .row {
+    flex-direction: column !important;
+  }
+
+  /* Make the two main columns full width */
+  .col-left,
+  .col-right {
+    width: 100% !important;
+    flex: 1 0 100% !important;
+  }
+
+  /* Ensure nested rows still behave normally */
+  .row .row {
+    flex-direction: row !important;
+  }
+
+  /* Image scaling */
+  .col-left img {
+    width: 80%;
+    height: auto;
+  }
+}
