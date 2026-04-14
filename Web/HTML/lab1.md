@@ -48,6 +48,8 @@ During this exercise you should make sure you cover the following essential tags
 <button> or <input type="submit">
 ```
 
+---
+
 ## Option 1 - **My Personal Mini‑Website**
 
 **Goal:** Create a simple 3‑page personal website about yourself, your hobbies, and your favourite things.
@@ -84,6 +86,8 @@ Required HTML Features;
 * \<table\> with \<thead\>, \<tbody\>, \<tr\>, \<td\>
 * Nested tags (e.g., \<p\>\<strong\>bold text\</strong\>\</p\>)
 * Lists (\<ul\>, \<ol\>)
+
+---
 
 ## Option 2 - **The Three‑Page Portfolio**
 
@@ -126,6 +130,8 @@ Required HTML Features;
 * Tables
 * Nested tags
 
+---
+
 ## Option 3 - **The Topic Explorer**
 
 **Goal:** Choose any topic you love (football, anime, cooking, cars, travel, pets, etc.) and build a mini‑site exploring it.
@@ -165,6 +171,8 @@ Required HTML Features;
 * Nested tags
 * Lists
 
+---
+
 ## Helpful References & Cheat Sheets for Students
 
 * HTML Cheat Sheets
@@ -176,3 +184,9 @@ Required HTML Features;
     * Placeholder profile photos: https://randomuser.me
 * HTML Validators
     * W3C Validator (to check their code): https://validator.w3.org/
+
+## Follow up lab
+
+Once you have completed this lab, the next stage will be to learn CSS to stylise your page.
+
+[CSS Lab](../CSS/lab1.md)
