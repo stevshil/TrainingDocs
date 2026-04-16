@@ -33,8 +33,10 @@ function getData() {
 function startData() {
   if ( timerid == undefined ) {
     console.log("Starting data collection");
+    if ( lasttime === undefined ) {
+      makeGraph();
+    }
     timerid = setInterval(getData,5000);
-    makeGraph();
   } else {
     console.log("Collection already started");
   }
@@ -42,6 +44,7 @@ function startData() {
 
 function stopData() {
   clearInterval(timerid);
+  timerid = undefined;
   console.log("Stopped data collection");
 }
 
@@ -69,6 +72,7 @@ function addNewData(apiObject) {
 
 function makeGraph() {
   // Extract values
+  getData();
   labels = apiData.map(item =>
     item["Realtime Currency Exchange Rate"]["6. Last Refreshed"]
   );
