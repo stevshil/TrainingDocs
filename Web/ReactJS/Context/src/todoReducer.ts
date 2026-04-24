@@ -7,11 +7,7 @@ export type TodoAction =
 export function todoReducer(state: Todo[], action: TodoAction): Todo[] {
   switch (action.type) {
     case "toggle":
-      return state.map(todo =>
-        todo.id === action.id
-          ? { ...todo, completed: !todo.completed }
-          : todo
-      );
+      return doToggle(state,action);
     case "add": {
       const maxId = state.length > 0
         ? Math.max(...state.map(t => t.id))
@@ -26,8 +22,23 @@ export function todoReducer(state: Todo[], action: TodoAction): Todo[] {
         }
       ];
     };
-    case "adds": {
-      // Step 1: Create a variable to hold the new ID
+    case "adds":
+      return alternateAdd(state, action);
+    default:
+      return state;
+  }
+}
+
+function doToggle(state: Todo[], action: TodoAction): Todo[] {
+  return state.map(todo =>
+        todo.id === action.id
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+}
+
+function alternateAdd(state: Todo[], action: TodoAction): Todo[] {
+  // Step 1: Create a variable to hold the new ID
       let newId = 0;
 
       // Step 2: Check if the state array has any todos
@@ -59,8 +70,4 @@ export function todoReducer(state: Todo[], action: TodoAction): Todo[] {
 
       // Step 9: Return the updated array
       return updatedList;
-    };
-    default:
-      return state;
-  }
-}
+};
