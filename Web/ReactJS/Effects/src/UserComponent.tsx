@@ -7,7 +7,7 @@ export default function UserComponent() {
     // Simulate fetching data
     const fetchUser = async () => {
       const response = await new Promise<{ name: string }>((resolve) =>
-        setTimeout(() => resolve({ name: "Alice" }), 1000)
+        setTimeout(() => resolve({ name: "Alice" }), 3000)
       );
       setUser(response);
     };
