@@ -1,0 +1,19 @@
+.bold{
+  font-weight: bold;
+}
+
+.app{
+  border: 1px solid black;
+  padding: 5px;
+  width: 300px;
+  background-color:  whitesmoke;
+}
+
+.selected{
+  font-weight: bold;
+}
+
+.controls{
+  padding: 5px;
+  background-color: lightgrey ;
+}

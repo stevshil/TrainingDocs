@@ -14,7 +14,7 @@ function delay(ms: number) {
 // Fetch with artificial delay
 async function fetchUserSlow(): Promise<UserData> {
   await delay(2000); // ← slow down by 2 seconds
-  const res = await fetch("https://jsonplaceholder.typicode.com/users/1");
+  const res = await fetch("https://jsonplaceholder.typicode.com/users/");
   return res.json();
 }
 

@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+h2,h4{
+  margin: 5px;
+}
+ul {
+  margin: 5px;
+}
+p{
+  margin: 2px;
+}

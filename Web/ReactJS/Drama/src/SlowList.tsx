@@ -7,7 +7,7 @@ export default function SlowList({ query }: Props) {
   const start = performance.now();
   while (performance.now() - start < 500) {} // 500ms block
 
-  const items = Array.from({ length: 2000 }, (_, i) => `${query} result ${i}`);
+  const items = Array.from({ length: 100 }, (_, i) => `${query} result ${i}`);
 
   return (
     <ul>
