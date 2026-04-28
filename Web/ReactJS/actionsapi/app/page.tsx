@@ -1,16 +1,15 @@
-// app/page.tsx
-import { TodoList } from "./components/TodoList";
-import { Todo } from "./components/TodoList";
-import { db } from "../lib/db"; // optional, depending on your setup
+import { db } from "../lib/db";
+import TodoList from "./components/TodoList";
+import TodoForm from "./components/TodoForm";
+import { addTodo } from "./actions";
 
 export default async function Page() {
-  // Example: fetch todos from your DB
-  const todos: Todo[] = await db.todo.findMany();
+  const todos = await db.todo.findMany();
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Todos</h1>
+    <main className="p-4 space-y-6">
       <TodoList todos={todos} />
+      <TodoForm action={addTodo} />
     </main>
   );
 }
