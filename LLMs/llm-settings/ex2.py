@@ -2,11 +2,18 @@
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from dotenv import load_dotenv
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# load_dotenv('../lab.env')
+# hf_token = os.getenv("HF_TOKEN")
+
 # For demonstration, we'll use a small GPT-2 model
-model_name = "gpt2"
+# model_name = "gpt2"
+model_name="mistralai/Mistral-7B-v0.1" # This is a big download
+# model_name = "LiquidAI/LFM2-2.6B"
+
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 # GPT‑2 has no pad token → define one # Next line helps remove the attention_mask
 tokenizer.pad_token = tokenizer.eos_token
@@ -36,7 +43,7 @@ def generate_with_temperature(prompt, temperature):
             # input_ids,
             # To remove the attention_mask warning
             **input_ids,
-            max_length=60,
+            max_length = 200,
             do_sample=True,
             temperature=temperature,
             pad_token_id=tokenizer.eos_token_id
@@ -44,10 +51,12 @@ def generate_with_temperature(prompt, temperature):
     return tokenizer.decode(output_ids[0], skip_special_tokens=True)
 
 prompt = "Describe a futuristic city in one paragraph:"
-for temp in [0.2, 0.7, 1.2]:
-# for temp in [0.01, 0.5, 1.5]:  # Try these
-    text = generate_with_temperature(prompt, temp)
-    print(f"\nTemperature {temp}:\n{text}")
+# for temp in [0.2, 0.7, 1.2]:
+# for temp in [0.01, 0.5, 1.5, 2.1]:  # Try these
+#     text = generate_with_temperature(prompt, temp)
+#     print(f"\nTemperature {temp}:\n{text}")
+text = generate_with_temperature(prompt, 0.5)
+print(f"\nTemperature .5:\n{text}")
 
 """
 **Expected Observations:**

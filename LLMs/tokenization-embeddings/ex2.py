@@ -65,3 +65,8 @@ Each embedding is a 768-dimensional vector. These dimensions capture different a
 Each number is a learned feature capturing some aspect of the token’s meaning or context.
 You can think of it as a coordinate in a 768‑dimensional semantic space.
 """
+
+# Show 768 embeddings from distilbert, or model
+np.set_printoptions(threshold=np.inf)
+embedding = get_embedding("How do I reset my password?")
+print(embedding)

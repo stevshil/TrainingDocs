@@ -42,3 +42,11 @@ attention_mask = encoded["attention_mask"]
 print(f"Query: {query}")
 print(f"Input IDs: {input_ids}")
 print(f"Attention Mask: {attention_mask}")
+
+query=["short text", "this is a much longer text"]
+encoded = tokenizer(query, padding=True)
+input_ids = encoded["input_ids"]
+attention_mask = encoded["attention_mask"]
+print(f"Query: {query}")
+print(f"Input IDs: {input_ids}")
+print(f"Attention Mask: {attention_mask}")

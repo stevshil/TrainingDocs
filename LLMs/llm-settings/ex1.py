@@ -16,7 +16,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name,pad_token_id=tokenizer.eos_token_id).to(device)
 model.generation_config.pad_token_id = tokenizer.pad_token_id
 
-model.eval()
+print(model.eval())
 
 """
 Generating Text with Default Settings
