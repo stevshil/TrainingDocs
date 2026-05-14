@@ -39,6 +39,15 @@ def build_history(id,message, model='gpt-5.4-mini', max_output=50):
     with open("chat_log.log","a") as fh:
         fh.write(f"ID: {id} - {messages}\n")
 
+def is_safe(prompt: str) -> bool:
+    result = client.moderations.create(
+        model="omni-moderation-latest",
+        input=prompt
+    )
+    flagged = result.results[0].flagged
+    print(flagged)
+    return not flagged
+
 if __name__ == "__main__":
     allids=[]
     try:
@@ -59,5 +68,8 @@ if __name__ == "__main__":
         if user_input.lower() in ['exit', 'quit']:
             print("Exiting chat. Goodbye!")
             break
-        build_history(id,user_input)
-        print(f"Assistant: {messages[-1]['content']}\n")
+        if is_safe(user_input):
+            build_history(id,user_input)
+            print(f"Assistant: {messages[-1]['content']}\n")
+        else:
+            print("Your prompt is not considers appropriate.")        
