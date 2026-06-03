@@ -22,6 +22,12 @@ This installs and runs a local Ollama LLM server on port 11434.
 
 On Linux you can control the service with **systemctl**
 
+On AMD systems Ollama detects AMD GPU perfectly.
+
+On Intel systems with CUDA GPUs it falls back to CPU.  See the following for help;
+
+- https://www.serverman.co.uk/server/ollama-gpu-not-detected-how-to-fix-cuda-and-rocm-errors/
+
 ## Using systemctl to control service
 
 ### Get status
@@ -60,6 +66,18 @@ or using the service method
 
 ```
 ollama pull mistral:7b
+```
+
+# Installing Astral UV
+
+See the main page for details for your system:
+
+- https://docs.astral.sh/uv/getting-started/installation/
+
+On Ubuntu and other Linux systems, use:
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 # Using **uv**

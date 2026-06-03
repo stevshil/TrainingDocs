@@ -25,5 +25,7 @@
         }
     ],
     "java.compile.nullAnalysis.mode": "disabled",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "snyk.advanced.autoSelectOrganization": true,
+    "snyk.advanced.organization": "bd9c094b-6c40-48ea-9999-3ca3c44caa34"
 }

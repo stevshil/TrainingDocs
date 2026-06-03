@@ -7,7 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from dotenv import load_dotenv
 
-load_dotenv("../lab.env")
+load_dotenv("lab.env")
 
 # 1. Connect to DB
 db = SQLDatabase.from_uri("sqlite:///data.db")
@@ -26,6 +26,7 @@ sql_prompt = ChatPromptTemplate.from_messages([
 
 # 5. Prompt for natural language answer
 nl_prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a professional sales auditor."),
     ("system", "Turn the SQL result into a clear English sentence."),
     ("user", "What is the total Nova One sales for the year"),
     ("assistant", "The total sales for the year of the Nova One is $199,200."),

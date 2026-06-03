@@ -27,3 +27,4 @@ llm-settings/torch
 **/.deepeval*
 Git/Non-repo
 **/*.log
+**/Snyk/nodejs-goof
