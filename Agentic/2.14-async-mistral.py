@@ -51,7 +51,8 @@ while x < 4:
     try:
         output = asyncio.run(run_agent())
         break
-    except:
+    except Exception as e:
+        print(f"Exception: {e}")
         if x == 0:
             print("Thinking",end="")
         print(".",end="")

@@ -56,7 +56,7 @@ sudo systemctl start ollama
 ollama serve
 ```
 
-# Download language for Ollama
+# Download model for Ollama
 
 ```
 ollama run llama3
@@ -66,6 +66,28 @@ or using the service method
 
 ```
 ollama pull mistral:7b
+```
+
+Other models
+
+```
+ollama pull qwen2.5:7b-instruct
+```
+
+Instead of gpt-4o-mini
+
+# Uninstall model
+
+List models
+
+```
+ollama list
+```
+
+Remove
+
+```
+ollama rm gpt-oss:120b
 ```
 
 # Installing Astral UV
