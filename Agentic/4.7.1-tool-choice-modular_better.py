@@ -1,7 +1,7 @@
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIChatModel
 from calc_tool import calculate_total
-from db_tool import run_sql
+from db_tool_better import run_sql
 from dotenv import load_dotenv
 
 load_dotenv("./lab.env")
@@ -28,30 +28,9 @@ You MUST use run_sql for ANY question involving:
 - sales
 - totals derived from database values
 
-NEVER use calculate_total for anything involving the database.
+NEVER use calculate_total for anything involving the mobile database.
 
 Only use calculate_total for simple arithmetic when NO database information is required.
-
-Database schema (use ONLY these columns):
-Products (product_id, model, manufacturer, name, price_net, tax_rate, product_code, release_date, stock_quantity)
-Customers (customer_id, first_name, last_name, email, phone, address)
-Orders (order_id, customer_id, order_date)
-OrderItems (order_item_id, order_id, product_id, quantity, price_net_at_purchase, tax_rate_at_purchase)
-
-Table aliases:
-p = Products
-c = Customers
-o = Orders
-oi = OrderItems
-
-STRICT RULES:
-- NEVER invent column names.
-- NEVER abbreviate column names.
-- ALWAYS fully qualify columns.
-- ALWAYS join tables correctly.
-- ALWAYS compute revenue using:
-  oi.quantity * oi.price_net_at_purchase * (1 + oi.tax_rate_at_purchase)
-- Always provide the final answer in a clear, concise format, e.g. "The total cost is $161.95." or "The iPhone 15 128GB generated the most revenue, with $1,950.40 in total."
 """
 
 agent = Agent(
@@ -69,3 +48,6 @@ if __name__ == "__main__":
     # DB question → run_sql
     result = agent.run_sync("Which mobile product generated the most revenue including tax?")
     print(result.output)  # e.g. "The iPhone 15 128GB generated the most revenue, with $1,950.40 in total."
+
+    result = agent.run_sync("Which mobile product was the least successful?")
+    print(result.output)

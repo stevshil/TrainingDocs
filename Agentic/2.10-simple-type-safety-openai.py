@@ -8,10 +8,9 @@ class QueryResult(BaseModel):
     summary: str = Field(max_length=200)
 
 agent = Agent(
-os.getenv('AI_MODEL', 'openai:gpt-5.4-mini'),
-output_type=QueryResult,
-# constrain + validate the model's
-output
+    os.getenv('AI_MODEL', 'openai:gpt-5.4-mini'),
+    output_type=QueryResult,
+    # constrain + validate the model's output
 )
 
 result = agent.run_sync("Summarize: 'The product works well but shipping was slow.'")
