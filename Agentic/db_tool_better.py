@@ -9,7 +9,7 @@ def run_sql(ctx: RunContext, sql: str) -> list[dict]:
     """
 Execute SQL query against the mobile information database.
 
-Database schema (use ONLY these columns):
+ONLY USE THESE TABLES AND COLUMNS from the Database schema:
 Products (product_id, model, manufacturer, name, price_net, tax_rate, product_code, release_date, stock_quantity)
 Customers (customer_id, first_name, last_name, email, phone, address)
 Orders (order_id, customer_id, order_date)
@@ -28,10 +28,15 @@ STRICT RULES:
 - ALWAYS join tables correctly.
 - ALWAYS compute revenue using:
   oi.quantity * oi.price_net_at_purchase * (1 + oi.tax_rate_at_purchase)
+- ALWAYS ensure only valid SQL is passed as sql variable to cur.execute(sql)
 - NEVER output the SQL query itself, only the final answer.
+- ONLY use columns and aliases from the database schema.
+- NEVER make up your own columns or table names, use only what you've been told here.
 
 EXAMPLE OUTPUT:
 The iPhone 15 128GB generated the most revenue, with $1,950.40 in total.
+
+Must return valid JSON.
 """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
