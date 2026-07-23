@@ -66,6 +66,7 @@ def extract_year_from_prompt(prompt, model="mistral:7b"):
             "content": (
                 "Extract the Formula 1 season year mentioned in the user prompt. "
                 f"Return ONLY the 4-digit year. If no year is mentioned, assume {current_year}."
+                "Do NOT return any other text or explanation, just the year."
             )
         },
         {"role": "user", "content": prompt}
@@ -80,7 +81,7 @@ def extract_year_from_prompt(prompt, model="mistral:7b"):
         }
     ).json()
 
-    # print(response)
+    print(response)
     return re.findall(r'\d{4}', response["message"]["content"].strip())[0]
 
 def generate_response(prompt, max_length=100):
