@@ -138,7 +138,7 @@ def generate_response(prompt, max_length=100):
 
 # Test the generate_response function
 test_prompt = input("Ask a formula 1 question: ")
-test_prompt = "who won the 2026 spanish grand prix"
+# test_prompt = "who won the 2026 spanish grand prix"
 test_response = generate_response(test_prompt, max_length=50)
 # html=fetch_f1_results(2026)
 # print(parse_race_winners(html))
