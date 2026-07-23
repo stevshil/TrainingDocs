@@ -38,7 +38,8 @@ def build_history(id,message, model='gpt-5.4-mini', max_output=150):
         summary_prompt = "Summarize the conversation so far in a concise manner."
         new_messages = messages[:2]
         new_messages.append({"role": "user", "content": summary_prompt})
-        summary = get_response(messages[2:], model=model, max_length=max_output)
+        new_messages.append({"role": "assistant", "content": messages[:2]})
+        summary = get_response(new_messages, model=model, max_length=max_output)
         messages = messages[:2]  # Keep only the system and developer messages
         messages.append({"role": "assistant", "content": summary})  # Add the summary as the assistant's message
         # Replace the conversation history with the summary

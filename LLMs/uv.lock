@@ -264,6 +264,15 @@ wheels = [
 ]
 
 [[package]]
+name = "dedent"
+version = "0.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/35/18/146730c20c38b0bc4b2e6c0cc6ba702420aa2d9a39e35ed97764f4e3b063/dedent-0.8.0.tar.gz", hash = "sha256:0a3c2487a1b3de2d0428667c7cb2d7fa5c786091e4dfea25e967355bdb5adc43", size = 37470, upload-time = "2026-02-20T03:46:03.171Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/79/52/0641970e801221cca79af1c5c0bb258935e737f856e058b42a8480b6cebb/dedent-0.8.0-py3-none-any.whl", hash = "sha256:73ce68759d165ab05fc12c4e7ff544adc44fbc6f910e26a1bd9c41ebe9fa5c4c", size = 10348, upload-time = "2026-02-20T03:46:01.79Z" },
+]
+
+[[package]]
 name = "distro"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -700,22 +709,26 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "bs4" },
+    { name = "dedent" },
     { name = "dotenv" },
     { name = "langchain-community" },
     { name = "langchain-core" },
     { name = "langchain-openai" },
     { name = "openai" },
+    { name = "pydantic" },
     { name = "requests" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "bs4", specifier = ">=0.0.2" },
+    { name = "dedent", specifier = ">=0.8.0" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "langchain-community", specifier = ">=0.4.2" },
     { name = "langchain-core", specifier = ">=1.5.0" },
     { name = "langchain-openai", specifier = ">=1.4.0" },
     { name = "openai", specifier = ">=2.47.0" },
+    { name = "pydantic", specifier = ">=2.13.4" },
     { name = "requests", specifier = ">=2.34.2" },
 ]
 
