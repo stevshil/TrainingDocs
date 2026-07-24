@@ -37,12 +37,8 @@ sql_prompt = ChatPromptTemplate.from_messages([
 nl_prompt = ChatPromptTemplate.from_messages([
     ("system", dedent("""You are a professional sales auditor.
         Turn the SQL result into a clear English sentence.
-        Pay attention to the prompts provide to ensure you are returning the correct information.
+        Pay attention to the prompts provided to ensure you are returning the correct information.
         Check your answer for accuracy and completeness and that it meets the prompt requirements.""")),
-    ("user", "What is the total Nova One sales for the year"),
-    ("assistant", "The total sales for the year of the Nova One is $199,200."),
-    ("user", "What is the worst selling product for the year"),
-    ("assistant", "The worst selling product for the year is the Nova Max ..."),
     ("user", "SQL result: {result}"),
     ("user", "question: {question}"),
 ])
@@ -78,7 +74,7 @@ chain = (
     # | RunnableLambda(debug_sql_prompt)
     | llm
     | RunnableLambda(run_tool)
-    | (lambda result: {"result": result})
+    | (lambda result: {"result": result, "question": RunnablePassthrough()})
     | nl_prompt
     | ChatOpenAI(model="gpt-4o-mini")
 )
@@ -87,11 +83,14 @@ chain = (
 print("Total sales of Nova One")
 result = chain.invoke("What is the total Nova One sales for the year?")
 print(result.content)
+print("Total Nova One units sold")
+result = chain.invoke("How many Nova One units were sold?")
+print(result.content)
 print("Worst selling product")
-result = chain.invoke("What is the worst selling product for the year relative to its price?")
+result = chain.invoke("What is the worst selling product?")
 print(result.content)
 print("Best selling product")
-result = chain.invoke("What is the best selling product for the year relative to its price?")
+result = chain.invoke("What is the best selling product?")
 print(result.content)
-result = chain.invoke("Add a new mobile phone to the database called 'Nova Ultra Steve'.")
-print(result.content)
+# result = chain.invoke("Add a new mobile phone to the database called 'Nova Ultra Steve'.")
+# print(result.content)
