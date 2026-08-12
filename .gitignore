@@ -28,3 +28,5 @@ llm-settings/torch
 Git/Non-repo
 **/*.log
 **/Snyk/nodejs-goof
+Java/**/build
+Java/**/.gradle
