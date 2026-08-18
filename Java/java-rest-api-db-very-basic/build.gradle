@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.neueda'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    // Database requirements
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
+}
+
+test {
+    useJUnitPlatform()
+}
