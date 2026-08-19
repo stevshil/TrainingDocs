@@ -45,3 +45,67 @@ The API client makes use of the Google Gson module.  To be able to use this and 
         implementation 'com.google.code.gson:gson:2.10.1'
    }
    ```
+
+# Building with Gradle CLI
+
+Building a Pradle project from the command line will require Gradle to be installed on your system.  Don't panic though, as most projects created through IntelliJ or via SpringInitialzr will create a wrapper that can be used called **gradlew**.  This downloads the appropriate gradle for your project.
+
+## Building the Jar file - method 1
+
+Using the **fatjar** method - see the **build.gradle-fatjar** for configuration.
+
+The main piece in the file that tells gradle to create the jar is;
+
+```groovy
+jar {
+    manifest {
+        attributes 'Main-Class': 'swapi.Server'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+```
+
+### To build
+
+```sh
+gradle clean build
+```
+
+Once complete successfully it will create your file in;
+
+**build/libs**
+
+## Building the Jar file - method 2
+
+The alternative method is to use the **shadowJar** plugin, as shown in the **build.gradle-shadow**.
+
+This requires 2 sections to be modified.
+
+1. **plugins**
+   - In this section you need to add;
+      ```groovy
+      id 'com.github.johnrengelman.shadow' version '8.1.1
+      ```
+2. Next you need to add the **shadowJar** section;
+   ```groovy
+   shadowJar {
+      manifest {
+         attributes 'Main-Class': 'swapi.Server'
+      }
+   }
+   ```
+
+### To build
+
+```sh
+gradle shadowJar
+```
+
+If building for a Docker container you need to use;
+
+```sh
+gradle shadowJar --no-daemon
+```
