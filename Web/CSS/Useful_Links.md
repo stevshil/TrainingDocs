@@ -47,3 +47,5 @@
 * https://www.sitepoint.com/css-animation-no-javascript/
 * https://animejs.com/
 * https://codepen.io/brundolf/pen/gRaREv
+* https://awesome-css.com
+* https://csszengarden.com
