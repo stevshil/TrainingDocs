@@ -1,0 +1,3 @@
+[submodule "Copilot-Skills-Prompts-Agents"]
+	path = Copilot-Skills-Prompts-Agents
+	url = https://github.com/stevshil/Copilot-Skills-Prompts-Agents.git
