@@ -12,13 +12,13 @@ from openai import OpenAI
 load_dotenv("lab.env")
 
 provider = os.getenv("AI_PROVIDER", "openai").lower()
-f1data = []
-f1data_usage = []
+f1data = [] # Cache for F1 API responses
+f1data_usage = [] # Track usage of cached vs API data
 
-if provider == "ollama":
+if provider == "ollama": # Set up to use a local Ollama model
     length_limit = 256
-    ai_model = os.getenv("AI_MODEL", "mistral:7b")
-    ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434").rstrip("/")
+    ai_model = os.getenv("AI_MODEL", "mistral:7b") # Which model to use from Ollama
+    ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434").rstrip("/") # The API url for Ollama
     if not ollama_url.endswith("/v1"):
         ollama_url = f"{ollama_url}/v1"
     client = OpenAI(
@@ -27,8 +27,8 @@ if provider == "ollama":
     )
 elif provider == "openai":
     length_limit = 50
-    ai_model = os.getenv("AI_MODEL", "gpt-5.4-mini")
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    ai_model = os.getenv("AI_MODEL", "gpt-5.4-mini") # Model to use from OpenAI
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"]) # Your API key to use the model
 else:
     raise ValueError("AI_PROVIDER must be either 'openai' or 'ollama'.")
 
@@ -37,6 +37,8 @@ messages=[]
 # Jolpica is the community-maintained, Ergast-compatible F1 API that is kept up to date each season
 F1_API_BASE = "https://api.jolpi.ca/ergast/f1"
 
+# The tool function that will retrieve F1 data from the API, using cached data if available
+# This function could be placed in a separate file and imported, to make it cleaner
 def fetch_f1_data(endpoint: str = "current") -> str:
     """
     Retrieve Formula 1 data (results, standings, schedules, etc.) from the
@@ -48,7 +50,7 @@ def fetch_f1_data(endpoint: str = "current") -> str:
         (
             item["data"]
             for item in f1data
-            if item["endpoint"] == cache_key and item["date"] == today
+            if item["endpoint"] == cache_key and item["date"] == today # Check if cached data is for the current day
         ),
         None,
     )
@@ -67,6 +69,7 @@ def fetch_f1_data(endpoint: str = "current") -> str:
         return f"Error retrieving F1 data: {e}"
 
 # Tool definition so the model can decide when to call the API for live/up to date info
+# This is the line that would make the LLM aware of the available tools
 tools = [
     {
         "type": "function",
@@ -179,12 +182,13 @@ def is_safe(prompt: str) -> bool:
     if provider == "ollama":
         return True
 
+    # Ensure that the prompt is safe before sending it to the model
     result = client.moderations.create(
         model="omni-moderation-latest",
         input=prompt
     )
     flagged = result.results[0].flagged
-    # print(flagged)
+    # print(flagged) # True would result in the prompt being considered unsafe
     return not flagged
 
 if __name__ == "__main__":
