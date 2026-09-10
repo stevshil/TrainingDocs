@@ -17,6 +17,16 @@ While working through the project, you might want to think about;
 - Set thresholds for your LLM to determine if the responses to prompts are within acceptable tolerances - from using the evaluation tools to check each response
     - Consider how you might do this without impacting on the application
 
+**Options**
+
+- You can substitute LangChain for LangGraph, or other modules if you are comfortable doing so
+- You can choose your own LLM models to work with, you don't have to use the suggested ones
+- You can use Copilot, but you need to use the methods for building a project through markdown (md) files, not ad-hoc prompts, e.g.;
+    - Instructions
+    - Agents
+    - Prompts
+    - Skills
+
 ---
 
 ### Step 0 – Setup (5–10 minutes)
