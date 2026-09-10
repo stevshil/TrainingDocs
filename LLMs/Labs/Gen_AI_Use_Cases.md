@@ -10,7 +10,7 @@ At the end of the task you should be able to prove that your **use case** should
 
 You might choose to present this information in a table, presentation, or other method, but you must be convincing and reason if required, proving that you have considered the areas essential to creating an AI process.
 
-## 1. Choose a shared topic (3 minutes)
+## 👥 1. Choose a shared topic (3 minutes)
 
 Pick something everyone knows well;
 - workflows
@@ -26,7 +26,7 @@ Examples:
 
 These are only suggestions, we want you to pick something you are all familiar with, or think would make a greate **Gen AI** app.
 
-## 2. Identify GenAI opportunities (5 minutes)
+## 💡 2. Identify GenAI opportunities (5 minutes)
 
 Discuss where GenAI could realistically help in your chosen topic.
 
@@ -40,13 +40,13 @@ To identify suitable use cases for Generative AI, consider the following:
 - Data-Driven Insights: Enhancing analytics with generated scenarios or forecasts.
 - Strategic Importance: Aligning AI capabilities with organizational goals for competitive advantage, with a focus on automation, creativity, and personalization as key drivers in 2025 ([Strategic Importance of GenAI](https://hatchworks.com/blog/generative-ai-use-cases-across-industries/)).
 
-### Record your insights to each of these
+### 📊 Record your insights to each of these
 
 - Identifying which are specific to your AI process, and ignore those that are not.
 - How relevant are they to your process
 - How will they relate to your AI process
 
-## 3. Surface ethical considerations (5 minutes)
+## 🤔 3. Surface ethical considerations (5 minutes)
 
 Generative AI introduces complex ethical challenges that require careful management.
 
@@ -63,7 +63,7 @@ For each use case, identify risks:
 
 Discuss how these risks might appear in your chosen topic. Grade these risks based on severity and how they will impact your design.
 
-## 4. Responsible‑use planning (5 minutes)
+## 📝 4. Responsible‑use planning (5 minutes)
 
 Define what responsible use would require:
 
@@ -91,7 +91,7 @@ One "issue‑spotting" insight (bias, accuracy, societal impact)
 
 Include a risk rating chart, that will quickly allow someone to identify areas of risk in the AI process, and how you came to your final result.
 
-## Prompts You Can Ask Copilot/ChatGPT During the Task
+## >_ Prompts You Can Ask Copilot/ChatGPT During the Task
 
 - "Analyse the ethical risks of using AI for <topic>."
 - "List potential GenAI use cases for <topic> and rate them by impact."
