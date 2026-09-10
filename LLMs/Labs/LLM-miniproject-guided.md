@@ -11,7 +11,7 @@ Target stack: Python, `openai`, `langchain`, `pydantic`, `sqlite3` or HTTP clien
 
 **Extras**
 
-While working through the project, you might want to about;
+While working through the project, you might want to think about;
 - How to minimize the calls to the API so that the LLM can use a local copy if available and up to date.
 - Improve on performance by reducing the need to work with external resources for every request or batching and caching methods
 - Set thresholds for your LLM to determine if the responses to prompts are within acceptable tolerances - from using the evaluation tools to check each response
