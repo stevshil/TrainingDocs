@@ -26,6 +26,8 @@ Examples:
 
 These are only suggestions, we want you to pick something you are all familiar with, or think would make a greate **Gen AI** app.
 
+From each of the following areas pick 2 or 3 points, preferably those with the **highest impact** to determine the effects on your application.
+
 ## 💡 2. Identify GenAI opportunities (5 minutes)
 
 Discuss where GenAI could realistically help in your chosen topic.
