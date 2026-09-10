@@ -91,7 +91,7 @@ One "issue‑spotting" insight (bias, accuracy, societal impact)
 
 Include a risk rating chart, that will quickly allow someone to identify areas of risk in the AI process, and how you came to your final result.
 
-## >_ Prompts You Can Ask Copilot/ChatGPT During the Task
+## >_ Prompts you can ask Copilot/ChatGPT during the task
 
 - "Analyse the ethical risks of using AI for <topic>."
 - "List potential GenAI use cases for <topic> and rate them by impact."
