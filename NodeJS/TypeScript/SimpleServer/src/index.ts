@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { callApi } from "./callapi";
 import { Film } from "../Types/Film";
 
