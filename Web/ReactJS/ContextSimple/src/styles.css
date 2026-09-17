@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.65rem;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+.app {
+  width: min(720px, calc(100% - 2rem));
+  margin: 3rem auto;
+}
+
+.card {
+  margin-top: 1rem;
+  border-radius: 12px;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 10%);
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
