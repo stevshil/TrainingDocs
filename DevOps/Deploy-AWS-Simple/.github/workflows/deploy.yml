@@ -1,0 +1,158 @@
+name: Build and deploy to EC2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Build and save Docker image
+        env:
+          IMAGE_REF: galactic-field-guide:${{ github.sha }}
+        run: |
+          set -euo pipefail
+          docker build --tag "$IMAGE_REF" .
+          docker save "$IMAGE_REF" | gzip -1 > "$RUNNER_TEMP/galactic-field-guide.tar.gz"
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: galactic-field-guide-image
+          path: ${{ runner.temp }}/galactic-field-guide.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: galactic-field-guide-image
+          path: ${{ runner.temp }}
+
+      - name: Validate deployment settings
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ vars.EC2_INSTANCE_PUBLIC_IP }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          APP_PORT: ${{ vars.APP_PORT }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          [[ "$EC2_INSTANCE_PUBLIC_IP" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]] || { echo "EC2_INSTANCE_PUBLIC_IP must be an IPv4 address." >&2; exit 1; }
+          [[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
+          [[ "$APP_PORT" =~ ^[0-9]+$ ]] && (( APP_PORT >= 1 && APP_PORT <= 65535 )) || { echo "APP_PORT must be between 1 and 65535." >&2; exit 1; }
+          [[ -n "$SSH_KEY" ]] || { echo "The SSH_KEY secret is required." >&2; exit 1; }
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Verify target instance
+        id: target
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ vars.EC2_INSTANCE_PUBLIC_IP }}
+        run: |
+          set -euo pipefail
+          instance_id="$(aws ec2 describe-instances \
+            --filters "Name=ip-address,Values=${EC2_INSTANCE_PUBLIC_IP}" \
+            --query 'Reservations[].Instances[] | [?State.Name==`running`].InstanceId | [0]' \
+            --output text)"
+          [[ "$instance_id" == i-* ]] || { echo "No running EC2 instance found at the configured public IP in AWS_REGION." >&2; exit 1; }
+          echo "instance_id=$instance_id" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare verified SSH connection
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ vars.EC2_INSTANCE_PUBLIC_IP }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/ec2_deploy_key"
+          chmod 600 "$RUNNER_TEMP/ec2_deploy_key"
+          cat > "$RUNNER_TEMP/ec2_ssh_config" <<EOF
+          Host ec2-deploy
+            HostName ${EC2_INSTANCE_PUBLIC_IP}
+            User ${EC2_SSH_USER}
+            IdentityFile ${RUNNER_TEMP}/ec2_deploy_key
+            UserKnownHostsFile /dev/null
+            GlobalKnownHostsFile /dev/null
+            StrictHostKeyChecking no
+            IdentitiesOnly yes
+          EOF
+          chmod 600 "$RUNNER_TEMP/ec2_ssh_config"
+          ssh-keygen -y -f "$RUNNER_TEMP/ec2_deploy_key" > /dev/null
+
+      - name: Copy image to EC2
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          scp -F "$RUNNER_TEMP/ec2_ssh_config" \
+            "$RUNNER_TEMP/galactic-field-guide.tar.gz" \
+            "ec2-deploy:/tmp/galactic-field-guide-${GITHUB_SHA}.tar.gz"
+
+      - name: Run container on EC2
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          APP_PORT: ${{ vars.APP_PORT }}
+        run: |
+          set -euo pipefail
+          ssh -F "$RUNNER_TEMP/ec2_ssh_config" ec2-deploy bash -s -- "$GITHUB_SHA" "$APP_PORT" <<'REMOTE'
+          set -Eeuo pipefail
+          image_tag="$1"
+          app_port="$2"
+          image_ref="galactic-field-guide:${image_tag}"
+          archive="/tmp/galactic-field-guide-${image_tag}.tar.gz"
+          container_name="galactic-field-guide"
+          trap 'rm -f "$archive"' EXIT
+
+          docker load --input "$archive"
+          docker rm --force "$container_name" >/dev/null 2>&1 || true
+          docker run --detach --restart unless-stopped \
+            --name "$container_name" \
+            --publish "${app_port}:80" \
+            "$image_ref"
+
+          for attempt in {1..10}; do
+            if docker exec "$container_name" wget -q -O /dev/null http://127.0.0.1/starships; then
+              break
+            fi
+            if [[ "$attempt" -eq 10 ]]; then
+              docker logs "$container_name"
+              exit 1
+            fi
+            sleep 2
+          done
+
+          current_image_id="$(docker image inspect --format '{{.Id}}' "$image_ref")"
+          docker image ls --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}}' \
+            | awk -v current="$current_image_id" '$1 ~ /^galactic-field-guide:/ && $2 != current { print $2 }' \
+            | sort -u \
+            | while IFS= read -r stale_image_id; do
+                [[ -z "$stale_image_id" ]] || docker image rm "$stale_image_id" || true
+              done
+          REMOTE
+
+      - name: Remove temporary deployment files
+        if: always()
+        run: rm -f "$RUNNER_TEMP/ec2_deploy_key" "$RUNNER_TEMP/ec2_ssh_config" "$RUNNER_TEMP/galactic-field-guide.tar.gz"
