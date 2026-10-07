@@ -39,6 +39,7 @@ The workflow;
                 - Key pair name of GitHub variable **KEY_PAIR_NAME**
                 - VPC ID of GitHub variable **VPC_ID**
                 - Subnet ID of GitHub variable **SUBNET_ID**
+                - Security Group ID of GitHub variable **SECGRP_ID**
             - You should have the values for these set up in your GitHub repository before pushing this repository.
                 - Change the names according to your cloud provider.  e.g. Azure does not have a VPC_ID, but a subscription.
 3. Once the VM is provisioned, you should ensure you have the Public IP, and that you can connect to it.
