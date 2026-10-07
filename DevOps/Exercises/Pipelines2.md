@@ -47,3 +47,7 @@ The workflow;
     - When should you give up on the connection?
 4. If you cannot connect then fail the pipeline
 5. If you can connect then continue with the deployment.
+
+# Destroying
+
+You should also consider destroying the VM as a separate, manual execution, so that you don't have to log in to your cloud provider to remove the instance.
