@@ -48,6 +48,19 @@ The workflow;
 4. If you cannot connect then fail the pipeline
 5. If you can connect then continue with the deployment.
 
+### Optional extras
+
+Think about the following and add them to your deployment;
+
+1. Rather than having to supply the values as variables for certain attributes, have the pipeline create those items if they do not already exist.  You should tag these items with **Frontend** so that it is easy to target them all.
+    - Security Group
+    - KEY_PAIR
+        - This will mean that you cannot log on to the VM directly, which is a good thing.
+
+2. Reducing downtime.
+    - There is a small downtime using this method when the pipeline removes the old container and starts the new one.
+    - Look into possible options and ways of acheiving a near zero downtime.
+
 # Destroying
 
 You should also consider destroying the VM as a separate, manual execution, so that you don't have to log in to your cloud provider to remove the instance.
