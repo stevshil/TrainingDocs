@@ -1,0 +1,53 @@
+name: Destroy EC2 Instance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+    destroy:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+
+        steps:
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+            mask-aws-account-id: true
+
+        - name: Terminate and verify Frontend instances
+          run: |
+            set -euo pipefail
+            matching_ids="$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=Frontend" \
+                "Name=instance-state-name,Values=pending,running,stopping,stopped,shutting-down" \
+              --query 'Reservations[].Instances[].InstanceId' \
+              --output text)"
+            read -r -a instance_ids <<< "${matching_ids//$'\n'/ }"
+
+            if (( ${#instance_ids[@]} == 0 )); then
+              echo "No non-terminated Frontend instances found in AWS_REGION; nothing to destroy."
+              exit 0
+            fi
+
+            for instance_id in "${instance_ids[@]}"; do
+              [[ "$instance_id" =~ ^i-([0-9a-f]{8}|[0-9a-f]{17})$ ]] || {
+                echo "AWS returned an invalid instance ID: $instance_id" >&2
+                exit 1
+              }
+            done
+
+            echo "Terminating Frontend instances: ${instance_ids[*]}"
+            aws ec2 terminate-instances --instance-ids "${instance_ids[@]}"
+            aws ec2 wait instance-terminated --instance-ids "${instance_ids[@]}"
+            echo "Instance termination verified."
+            echo "Destroy workflow completed."

@@ -1,0 +1,348 @@
+name: Build and deploy to EC2
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Build and save Docker image
+        env:
+          IMAGE_REF: galactic-field-guide:${{ github.sha }}
+        run: |
+          set -euo pipefail
+          docker build --tag "$IMAGE_REF" .
+          docker save "$IMAGE_REF" | gzip -1 > "$RUNNER_TEMP/galactic-field-guide.tar.gz"
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: galactic-field-guide-image
+          path: ${{ runner.temp }}/galactic-field-guide.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
+  provision:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    outputs:
+      public_ip: ${{ steps.instance.outputs.public_ip }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Validate provisioning settings
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AMI_ID: ${{ vars.AMI_ID }}
+          KEY_PAIR_NAME: ${{ vars.KEY_PAIR_NAME }}
+          VPC_ID: ${{ vars.VPC_ID }}
+          SUBNET_ID: ${{ vars.SUBNET_ID }}
+          SECGRP_ID: ${{ vars.SECGRP_ID }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "$AWS_REGION" && -n "$AMI_ID" && -n "$KEY_PAIR_NAME" && -n "$VPC_ID" && -n "$SUBNET_ID" && -n "$SECGRP_ID" ]] || {
+            echo "AWS_REGION, AMI_ID, KEY_PAIR_NAME, VPC_ID, SUBNET_ID, and SECGRP_ID repository variables are required." >&2
+            exit 1
+          }
+          [[ "$AMI_ID" =~ ^ami-[[:alnum:]]+$ ]] || { echo "AMI_ID must be a valid AMI identifier." >&2; exit 1; }
+          [[ "$VPC_ID" =~ ^vpc-[[:alnum:]]+$ ]] || { echo "VPC_ID must be a valid VPC identifier." >&2; exit 1; }
+          [[ "$SUBNET_ID" =~ ^subnet-[[:alnum:]]+$ ]] || { echo "SUBNET_ID must be a valid subnet identifier." >&2; exit 1; }
+          [[ "$SECGRP_ID" =~ ^sg-([0-9a-f]{8}|[0-9a-f]{17})$ ]] || { echo "SECGRP_ID must be a valid security group identifier." >&2; exit 1; }
+          [[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
+          [[ -n "$SSH_KEY" ]] || { echo "The SSH_KEY secret is required and must match KEY_PAIR_NAME." >&2; exit 1; }
+
+      - name: Find or create Frontend instance
+        id: instance
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AMI_ID: ${{ vars.AMI_ID }}
+          KEY_PAIR_NAME: ${{ vars.KEY_PAIR_NAME }}
+          VPC_ID: ${{ vars.VPC_ID }}
+          SUBNET_ID: ${{ vars.SUBNET_ID }}
+          SECGRP_ID: ${{ vars.SECGRP_ID }}
+        run: |
+          set -euo pipefail
+
+          aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=Frontend" \
+            --output json > "$RUNNER_TEMP/frontend-instances.json"
+          mapfile -t matching_instances < <(jq -r '
+            [.Reservations[].Instances[]
+              | select(.State.Name != "terminated" and .State.Name != "shutting-down")]
+            | sort_by(.LaunchTime)
+            | reverse
+            | .[].InstanceId
+          ' "$RUNNER_TEMP/frontend-instances.json")
+
+          if (( ${#matching_instances[@]} > 1 )); then
+            echo "More than one non-terminated EC2 instance has the Name tag Frontend; refusing to choose one." >&2
+            exit 1
+          elif (( ${#matching_instances[@]} == 1 )); then
+            instance_id="${matching_instances[0]}"
+            state="$(jq -r --arg id "$instance_id" \
+              '.Reservations[].Instances[] | select(.InstanceId == $id) | .State.Name' \
+              "$RUNNER_TEMP/frontend-instances.json")"
+            echo "Using existing Frontend instance $instance_id ($state)."
+
+            case "$state" in
+              running)
+                ;;
+              stopped)
+                aws ec2 start-instances --instance-ids "$instance_id" >/dev/null
+                ;;
+              stopping)
+                aws ec2 wait instance-stopped --instance-ids "$instance_id"
+                aws ec2 start-instances --instance-ids "$instance_id" >/dev/null
+                ;;
+              pending)
+                ;;
+              *)
+                echo "Frontend instance $instance_id is in unsupported state '$state'." >&2
+                exit 1
+                ;;
+            esac
+          else
+            subnet_vpc_id="$(aws ec2 describe-subnets \
+              --subnet-ids "$SUBNET_ID" \
+              --query 'Subnets[0].VpcId' \
+              --output text)"
+            [[ "$subnet_vpc_id" == "$VPC_ID" ]] || {
+              echo "SUBNET_ID does not belong to the configured VPC_ID." >&2
+              exit 1
+            }
+            security_group_vpc_id="$(aws ec2 describe-security-groups \
+              --group-ids "$SECGRP_ID" \
+              --query 'SecurityGroups[0].VpcId' \
+              --output text)"
+            [[ "$security_group_vpc_id" == "$VPC_ID" ]] || {
+              echo "SECGRP_ID does not belong to the configured VPC_ID." >&2
+              exit 1
+            }
+            aws ec2 describe-key-pairs --key-names "$KEY_PAIR_NAME" >/dev/null
+            instance_id="$(aws ec2 run-instances \
+              --image-id "$AMI_ID" \
+              --instance-type t3.micro \
+              --key-name "$KEY_PAIR_NAME" \
+              --subnet-id "$SUBNET_ID" \
+              --security-group-ids "$SECGRP_ID" \
+              --associate-public-ip-address \
+              --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Frontend}]' \
+              --query 'Instances[0].InstanceId' \
+              --output text)"
+            [[ "$instance_id" == i-* ]] || { echo "AWS did not return a valid instance ID." >&2; exit 1; }
+            echo "Created Frontend instance $instance_id."
+          fi
+
+          aws ec2 wait instance-running --instance-ids "$instance_id"
+          public_ip=""
+          for attempt in {1..30}; do
+            public_ip="$(aws ec2 describe-instances \
+              --instance-ids "$instance_id" \
+              --query 'Reservations[0].Instances[0].PublicIpAddress' \
+              --output text)"
+            if [[ "$public_ip" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]]; then
+              break
+            fi
+            if [[ "$attempt" -eq 30 ]]; then
+              echo "Frontend instance $instance_id did not receive a public IPv4 address." >&2
+              exit 1
+            fi
+            sleep 10
+          done
+
+          echo "public_ip=$public_ip" >> "$GITHUB_OUTPUT"
+          echo "Instance has IP of $public_ip"
+
+      - name: Prepare and verify SSH access
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ steps.instance.outputs.public_ip }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/ec2_deploy_key"
+          chmod 600 "$RUNNER_TEMP/ec2_deploy_key"
+          cat > "$RUNNER_TEMP/ec2_ssh_config" <<EOF
+          Host ec2-deploy
+            HostName ${EC2_INSTANCE_PUBLIC_IP}
+            User ${EC2_SSH_USER}
+            IdentityFile ${RUNNER_TEMP}/ec2_deploy_key
+            UserKnownHostsFile /dev/null
+            GlobalKnownHostsFile /dev/null
+            StrictHostKeyChecking no
+            IdentitiesOnly yes
+            ConnectTimeout 10
+            BatchMode yes
+          EOF
+          chmod 600 "$RUNNER_TEMP/ec2_ssh_config"
+          ssh-keygen -y -f "$RUNNER_TEMP/ec2_deploy_key" > /dev/null
+
+          for attempt in {0..3}; do
+            if ssh -F "$RUNNER_TEMP/ec2_ssh_config" ec2-deploy true; then
+              echo "SSH access to $EC2_INSTANCE_PUBLIC_IP is available."
+              break
+            fi
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "SSH access to $EC2_INSTANCE_PUBLIC_IP failed after three one-minute retries." >&2
+              exit 1
+            fi
+            echo "SSH is not available yet; waiting one minute before retry $((attempt + 1)) of 3."
+            sleep 60
+          done
+
+      - name: Install and enable Docker
+        run: |
+          set -euo pipefail
+          ssh -F "$RUNNER_TEMP/ec2_ssh_config" ec2-deploy 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          sudo yum -y install docker
+          sudo usermod -aG docker "$USER"
+          sudo systemctl enable --now docker
+          REMOTE
+
+  deploy:
+    needs: [build, provision]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: galactic-field-guide-image
+          path: ${{ runner.temp }}
+
+      - name: Validate deployment settings
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ needs.provision.outputs.public_ip }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          APP_PORT: ${{ vars.APP_PORT }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          [[ "$EC2_INSTANCE_PUBLIC_IP" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]] || { echo "EC2_INSTANCE_PUBLIC_IP must be an IPv4 address." >&2; exit 1; }
+          [[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
+          [[ "$APP_PORT" =~ ^[0-9]+$ ]] && (( APP_PORT >= 1 && APP_PORT <= 65535 )) || { echo "APP_PORT must be between 1 and 65535." >&2; exit 1; }
+          [[ -n "$SSH_KEY" ]] || { echo "The SSH_KEY secret is required." >&2; exit 1; }
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Verify target instance
+        id: target
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ needs.provision.outputs.public_ip }}
+        run: |
+          set -euo pipefail
+          instance_id="$(aws ec2 describe-instances \
+            --filters "Name=ip-address,Values=${EC2_INSTANCE_PUBLIC_IP}" \
+            --query 'Reservations[].Instances[] | [?State.Name==`running`].InstanceId | [0]' \
+            --output text)"
+          [[ "$instance_id" == i-* ]] || { echo "No running EC2 instance found at the configured public IP in AWS_REGION." >&2; exit 1; }
+          echo "instance_id=$instance_id" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare verified SSH connection
+        env:
+          EC2_INSTANCE_PUBLIC_IP: ${{ needs.provision.outputs.public_ip }}
+          EC2_SSH_USER: ${{ vars.EC2_SSH_USER || 'ec2-user' }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/ec2_deploy_key"
+          chmod 600 "$RUNNER_TEMP/ec2_deploy_key"
+          cat > "$RUNNER_TEMP/ec2_ssh_config" <<EOF
+          Host ec2-deploy
+            HostName ${EC2_INSTANCE_PUBLIC_IP}
+            User ${EC2_SSH_USER}
+            IdentityFile ${RUNNER_TEMP}/ec2_deploy_key
+            UserKnownHostsFile /dev/null
+            GlobalKnownHostsFile /dev/null
+            StrictHostKeyChecking no
+            IdentitiesOnly yes
+          EOF
+          chmod 600 "$RUNNER_TEMP/ec2_ssh_config"
+          ssh-keygen -y -f "$RUNNER_TEMP/ec2_deploy_key" > /dev/null
+
+      - name: Copy image to EC2
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          scp -F "$RUNNER_TEMP/ec2_ssh_config" \
+            "$RUNNER_TEMP/galactic-field-guide.tar.gz" \
+            "ec2-deploy:/tmp/galactic-field-guide-${GITHUB_SHA}.tar.gz"
+
+      - name: Run container on EC2
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          APP_PORT: ${{ vars.APP_PORT }}
+          EC2_INSTANCE_PUBLIC_IP: ${{ needs.provision.outputs.public_ip }}
+        run: |
+          set -euo pipefail
+          ssh -F "$RUNNER_TEMP/ec2_ssh_config" ec2-deploy bash -s -- "$GITHUB_SHA" "$APP_PORT" <<'REMOTE'
+          set -Eeuo pipefail
+          image_tag="$1"
+          app_port="$2"
+          image_ref="galactic-field-guide:${image_tag}"
+          archive="/tmp/galactic-field-guide-${image_tag}.tar.gz"
+          container_name="galactic-field-guide"
+          trap 'rm -f "$archive"' EXIT
+
+          docker load --input "$archive"
+          docker rm --force "$container_name" >/dev/null 2>&1 || true
+          docker run --detach --restart unless-stopped \
+            --name "$container_name" \
+            --publish "${app_port}:80" \
+            "$image_ref"
+
+          for attempt in {1..10}; do
+            if docker exec "$container_name" wget -q -O /dev/null http://127.0.0.1/starships; then
+              break
+            fi
+            if [[ "$attempt" -eq 10 ]]; then
+              docker logs "$container_name"
+              exit 1
+            fi
+            sleep 2
+          done
+
+          current_image_id="$(docker image inspect --format '{{.Id}}' "$image_ref")"
+          docker image ls --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}}' \
+            | awk -v current="$current_image_id" '$1 ~ /^galactic-field-guide:/ && $2 != current { print $2 }' \
+            | sort -u \
+            | while IFS= read -r stale_image_id; do
+                [[ -z "$stale_image_id" ]] || docker image rm "$stale_image_id" || true
+              done
+          REMOTE
+
+          echo "URL for service http://${EC2_INSTANCE_PUBLIC_IP}:${APP_PORT}"
+
+      - name: Remove temporary deployment files
+        if: always()
+        run: rm -f "$RUNNER_TEMP/ec2_deploy_key" "$RUNNER_TEMP/ec2_ssh_config" "$RUNNER_TEMP/galactic-field-guide.tar.gz"
