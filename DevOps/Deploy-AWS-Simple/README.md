@@ -51,6 +51,8 @@ The instance must have Docker installed and running, and its security group must
 
 `Jenkinsfile` is a Declarative Pipeline equivalent of `.github/workflows/deploy-with-instance.yml`. Create a **Pipeline from SCM** job pointing to this file, or a Multibranch Pipeline. Install the Pipeline (including Declarative), Git, and Credentials Binding plugins. The selected agent must run Linux and have Bash, Git, Docker, AWS CLI, jq, gzip, and OpenSSH installed, with permission to use the Docker daemon.
 
+The pipeline uses the agent's existing NVM installation rather than a Jenkins tool. `NPM_PATH` is `/home/wasadmin/.nvm/versions/node/v20.15.0/bin/npm`, and the corresponding `bin` directory is prepended to PATH so npm can find its Node.js runtime. The Jenkins agent user must have permission to traverse this directory and execute both binaries. No NodeJS plugin or Jenkins NodeJS tool installation is required. The Build stage prints both versions before building the Docker image. The app's dependency installation and production build still run inside Docker using the Dockerfile's Node.js 22 image.
+
 Create these Jenkins credentials, using the exact IDs below:
 
 - `AWS_ACCESS_KEY_ID`: **Secret text** containing the AWS access key ID.

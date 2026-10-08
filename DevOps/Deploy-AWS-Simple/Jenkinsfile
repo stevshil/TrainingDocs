@@ -10,12 +10,12 @@ pipeline {
 	}
 
 	parameters {
-		string(name: 'AWS_REGION', defaultValue: '', description: 'AWS region containing the EC2 instance.')
-		string(name: 'AMI_ID', defaultValue: '', description: 'Amazon Linux AMI with yum and systemd.')
-		string(name: 'KEY_PAIR_NAME', defaultValue: '', description: 'EC2 key pair matching the SSH_KEY credential.')
-		string(name: 'VPC_ID', defaultValue: '', description: 'VPC for a new instance.')
-		string(name: 'SUBNET_ID', defaultValue: '', description: 'Public subnet for a new instance.')
-		string(name: 'SECGRP_ID', defaultValue: '', description: 'Security group allowing SSH and APP_PORT.')
+		string(name: 'AWS_REGION', defaultValue: 'us-west-2', description: 'AWS region containing the EC2 instance.')
+		string(name: 'AMI_ID', defaultValue: 'ami-0d53cc9bd365ad65b', description: 'Amazon Linux AMI with yum and systemd.')
+		string(name: 'KEY_PAIR_NAME', defaultValue: 'steveshilling-wa', description: 'EC2 key pair matching the SSH_KEY credential.')
+		string(name: 'VPC_ID', defaultValue: 'vpc-0ec267a592e32a013, description: 'VPC for a new instance.')
+		string(name: 'SUBNET_ID', defaultValue: 'subnet-020561d0540287ae7', description: 'Public subnet for a new instance.')
+		string(name: 'SECGRP_ID', defaultValue: 'sg-0d6b610389166298d', description: 'Security group allowing SSH and APP_PORT.')
 		string(name: 'EC2_SSH_USER', defaultValue: 'ec2-user', description: 'EC2 SSH username.')
 		string(name: 'APP_PORT', defaultValue: '80', description: 'Host port to publish, from 1 to 65535.')
 	}
@@ -23,6 +23,8 @@ pipeline {
 	environment {
 		AWS_DEFAULT_REGION = "${params.AWS_REGION}"
 		AWS_PAGER = ''
+		NPM_PATH = '/home/wasadmin/.nvm/versions/node/v20.15.0/bin/npm'
+		PATH = "/home/wasadmin/.nvm/versions/node/v20.15.0/bin:${env.PATH}"
 	}
 
 	stages {
@@ -37,6 +39,8 @@ pipeline {
 					sh '''
 					#!/usr/bin/env bash
 					set -euo pipefail
+					node --version
+					"$NPM_PATH" --version
 					image_ref="galactic-field-guide:${IMAGE_TAG}"
 					docker build --tag "$image_ref" .
 					docker save "$image_ref" | gzip -1 > "$DEPLOY_TEMP/galactic-field-guide.tar.gz"
