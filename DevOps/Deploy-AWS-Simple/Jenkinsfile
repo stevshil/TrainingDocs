@@ -13,7 +13,7 @@ pipeline {
 		string(name: 'AWS_REGION', defaultValue: 'us-west-2', description: 'AWS region containing the EC2 instance.')
 		string(name: 'AMI_ID', defaultValue: 'ami-0d53cc9bd365ad65b', description: 'Amazon Linux AMI with yum and systemd.')
 		string(name: 'KEY_PAIR_NAME', defaultValue: 'steveshilling-wa', description: 'EC2 key pair matching the SSH_KEY credential.')
-		string(name: 'VPC_ID', defaultValue: 'vpc-0ec267a592e32a013, description: 'VPC for a new instance.')
+		string(name: 'VPC_ID', defaultValue: 'vpc-0ec267a592e32a013', description: 'VPC for a new instance.')
 		string(name: 'SUBNET_ID', defaultValue: 'subnet-020561d0540287ae7', description: 'Public subnet for a new instance.')
 		string(name: 'SECGRP_ID', defaultValue: 'sg-0d6b610389166298d', description: 'Security group allowing SSH and APP_PORT.')
 		string(name: 'EC2_SSH_USER', defaultValue: 'ec2-user', description: 'EC2 SSH username.')
