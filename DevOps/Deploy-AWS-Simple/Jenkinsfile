@@ -1,0 +1,278 @@
+pipeline {
+	agent any
+
+	options {
+		skipDefaultCheckout(true)
+		disableConcurrentBuilds()
+		buildDiscarder(logRotator(artifactDaysToKeepStr: '1'))
+	}
+
+	parameters {
+		string(name: 'BUILD_CONTEXT', defaultValue: '.', description: 'Directory containing the Dockerfile, relative to the SCM checkout.')
+		string(name: 'AWS_REGION', defaultValue: '', description: 'AWS region containing the EC2 instance.')
+		string(name: 'AMI_ID', defaultValue: '', description: 'Amazon Linux AMI with yum and systemd.')
+		string(name: 'KEY_PAIR_NAME', defaultValue: '', description: 'EC2 key pair matching the SSH_KEY credential.')
+		string(name: 'VPC_ID', defaultValue: '', description: 'VPC for a new instance.')
+		string(name: 'SUBNET_ID', defaultValue: '', description: 'Public subnet for a new instance.')
+		string(name: 'SECGRP_ID', defaultValue: '', description: 'Security group allowing SSH and APP_PORT.')
+		string(name: 'EC2_SSH_USER', defaultValue: 'ec2-user', description: 'EC2 SSH username.')
+		string(name: 'APP_PORT', defaultValue: '80', description: 'Host port to publish, from 1 to 65535.')
+	}
+
+	environment {
+		AWS_DEFAULT_REGION = "${params.AWS_REGION}"
+		AWS_PAGER = ''
+	}
+
+	stages {
+		stage('Build') {
+			steps {
+				checkout scm
+				script {
+					env.IMAGE_TAG = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+					env.DEPLOY_TEMP = sh(script: 'mktemp -d', returnStdout: true).trim()
+				}
+				sh '''
+					#!/usr/bin/env bash
+					set -euo pipefail
+					image_ref="galactic-field-guide:${IMAGE_TAG}"
+					docker build --tag "$image_ref" "$BUILD_CONTEXT"
+					docker save "$image_ref" | gzip -1 > "$DEPLOY_TEMP/galactic-field-guide.tar.gz"
+					cp "$DEPLOY_TEMP/galactic-field-guide.tar.gz" "$WORKSPACE/galactic-field-guide.tar.gz"
+					'''.stripIndent().trim()
+				archiveArtifacts artifacts: 'galactic-field-guide.tar.gz', allowEmptyArchive: false
+			}
+		}
+
+		stage('Provision') {
+			options {
+				timeout(time: 35, unit: 'MINUTES')
+			}
+			environment {
+				AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+				AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+				SSH_KEY_FILE = credentials('SSH_KEY')
+			}
+			steps {
+				sh '''
+					#!/usr/bin/env bash
+					set -euo pipefail
+					[[ -n "$AWS_REGION" && -n "$AMI_ID" && -n "$KEY_PAIR_NAME" && -n "$VPC_ID" && -n "$SUBNET_ID" && -n "$SECGRP_ID" ]] || {
+						echo "AWS_REGION, AMI_ID, KEY_PAIR_NAME, VPC_ID, SUBNET_ID, and SECGRP_ID build parameters are required." >&2
+						exit 1
+					}
+					[[ "$AMI_ID" =~ ^ami-[[:alnum:]]+$ ]] || { echo "AMI_ID must be a valid AMI identifier." >&2; exit 1; }
+					[[ "$VPC_ID" =~ ^vpc-[[:alnum:]]+$ ]] || { echo "VPC_ID must be a valid VPC identifier." >&2; exit 1; }
+					[[ "$SUBNET_ID" =~ ^subnet-[[:alnum:]]+$ ]] || { echo "SUBNET_ID must be a valid subnet identifier." >&2; exit 1; }
+					[[ "$SECGRP_ID" =~ ^sg-([0-9a-f]{8}|[0-9a-f]{17})$ ]] || { echo "SECGRP_ID must be a valid security group identifier." >&2; exit 1; }
+					[[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
+					[[ -s "$SSH_KEY_FILE" ]] || { echo "The SSH_KEY file credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
+
+					aws ec2 describe-instances \\
+						--filters "Name=tag:Name,Values=Frontend" \\
+						--output json > "$DEPLOY_TEMP/frontend-instances.json"
+					mapfile -t matching_instances < <(jq -r '
+						[.Reservations[].Instances[]
+							| select(.State.Name != "terminated" and .State.Name != "shutting-down")]
+						| sort_by(.LaunchTime)
+						| reverse
+						| .[].InstanceId
+					' "$DEPLOY_TEMP/frontend-instances.json")
+
+					if (( ${#matching_instances[@]} > 1 )); then
+						echo "More than one non-terminated EC2 instance has the Name tag Frontend; refusing to choose one." >&2
+						exit 1
+					elif (( ${#matching_instances[@]} == 1 )); then
+						instance_id="${matching_instances[0]}"
+						state="$(jq -r --arg id "$instance_id" \\
+							'.Reservations[].Instances[] | select(.InstanceId == $id) | .State.Name' \\
+							"$DEPLOY_TEMP/frontend-instances.json")"
+						echo "Using existing Frontend instance $instance_id ($state)."
+						case "$state" in
+							running|pending)
+								;;
+							stopped)
+								aws ec2 start-instances --instance-ids "$instance_id" >/dev/null
+								;;
+							stopping)
+								aws ec2 wait instance-stopped --instance-ids "$instance_id"
+								aws ec2 start-instances --instance-ids "$instance_id" >/dev/null
+								;;
+							*)
+								echo "Frontend instance $instance_id is in unsupported state '$state'." >&2
+								exit 1
+								;;
+						esac
+					else
+						subnet_vpc_id="$(aws ec2 describe-subnets \\
+							--subnet-ids "$SUBNET_ID" \\
+							--query 'Subnets[0].VpcId' --output text)"
+						[[ "$subnet_vpc_id" == "$VPC_ID" ]] || {
+							echo "SUBNET_ID does not belong to the configured VPC_ID." >&2
+							exit 1
+						}
+						security_group_vpc_id="$(aws ec2 describe-security-groups \\
+							--group-ids "$SECGRP_ID" \\
+							--query 'SecurityGroups[0].VpcId' --output text)"
+						[[ "$security_group_vpc_id" == "$VPC_ID" ]] || {
+							echo "SECGRP_ID does not belong to the configured VPC_ID." >&2
+							exit 1
+						}
+						aws ec2 describe-key-pairs --key-names "$KEY_PAIR_NAME" >/dev/null
+						instance_id="$(aws ec2 run-instances \\
+							--image-id "$AMI_ID" \\
+							--instance-type t3.micro \\
+							--key-name "$KEY_PAIR_NAME" \\
+							--subnet-id "$SUBNET_ID" \\
+							--security-group-ids "$SECGRP_ID" \\
+							--associate-public-ip-address \\
+							--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Frontend}]' \\
+							--query 'Instances[0].InstanceId' --output text)"
+						[[ "$instance_id" == i-* ]] || { echo "AWS did not return a valid instance ID." >&2; exit 1; }
+						echo "Created Frontend instance $instance_id."
+					fi
+
+					aws ec2 wait instance-running --instance-ids "$instance_id"
+					for attempt in {1..30}; do
+						public_ip="$(aws ec2 describe-instances \\
+							--instance-ids "$instance_id" \\
+							--query 'Reservations[0].Instances[0].PublicIpAddress' --output text)"
+						if [[ "$public_ip" =~ ^[0-9]{1,3}([.][0-9]{1,3}){3}$ ]]; then
+							break
+						fi
+						if [[ "$attempt" -eq 30 ]]; then
+							echo "Frontend instance $instance_id did not receive a public IPv4 address." >&2
+							exit 1
+						fi
+						sleep 10
+					done
+					printf '%s\\n' "$public_ip" > "$DEPLOY_TEMP/public-ip"
+					echo "Instance has IP of $public_ip"
+					'''.stripIndent().trim()
+				script {
+					env.EC2_INSTANCE_PUBLIC_IP = readFile("${env.DEPLOY_TEMP}/public-ip").trim()
+				}
+				sh '''
+					#!/usr/bin/env bash
+					set -euo pipefail
+					install -m 600 "$SSH_KEY_FILE" "$DEPLOY_TEMP/ec2_deploy_key"
+					cat > "$DEPLOY_TEMP/ec2_ssh_config" <<EOF
+					Host ec2-deploy
+					  HostName ${EC2_INSTANCE_PUBLIC_IP}
+					  User ${EC2_SSH_USER}
+					  IdentityFile ${DEPLOY_TEMP}/ec2_deploy_key
+					  UserKnownHostsFile /dev/null
+					  GlobalKnownHostsFile /dev/null
+					  StrictHostKeyChecking no
+					  IdentitiesOnly yes
+					  ConnectTimeout 10
+					  BatchMode yes
+					EOF
+					chmod 600 "$DEPLOY_TEMP/ec2_ssh_config"
+					ssh-keygen -y -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null
+
+					for attempt in {0..3}; do
+						if ssh -F "$DEPLOY_TEMP/ec2_ssh_config" ec2-deploy true; then
+							echo "SSH access to $EC2_INSTANCE_PUBLIC_IP is available."
+							break
+						fi
+						if [[ "$attempt" -eq 3 ]]; then
+							echo "SSH access to $EC2_INSTANCE_PUBLIC_IP failed after three one-minute retries." >&2
+							exit 1
+						fi
+						echo "SSH is not available yet; waiting one minute before retry $((attempt + 1)) of 3."
+						sleep 60
+					done
+
+					ssh -F "$DEPLOY_TEMP/ec2_ssh_config" ec2-deploy 'bash -s' <<'REMOTE'
+					set -euo pipefail
+					sudo yum -y install docker
+					sudo usermod -aG docker "$USER"
+					sudo systemctl enable --now docker
+					REMOTE
+					'''.stripIndent().trim()
+			}
+		}
+
+		stage('Deploy') {
+			options {
+				timeout(time: 15, unit: 'MINUTES')
+			}
+			environment {
+				AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+				AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+			}
+			steps {
+				sh '''
+					#!/usr/bin/env bash
+					set -euo pipefail
+					[[ "$EC2_INSTANCE_PUBLIC_IP" =~ ^[0-9]{1,3}([.][0-9]{1,3}){3}$ ]] || { echo "EC2_INSTANCE_PUBLIC_IP must be an IPv4 address." >&2; exit 1; }
+					[[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
+					[[ "$APP_PORT" =~ ^[0-9]+$ ]] && (( APP_PORT >= 1 && APP_PORT <= 65535 )) || { echo "APP_PORT must be between 1 and 65535." >&2; exit 1; }
+					[[ -s "$DEPLOY_TEMP/ec2_deploy_key" ]] || { echo "The SSH_KEY credential is required." >&2; exit 1; }
+
+					instance_id="$(aws ec2 describe-instances \\
+						--filters "Name=ip-address,Values=${EC2_INSTANCE_PUBLIC_IP}" \\
+						--query 'Reservations[].Instances[] | [?State.Name==`running`].InstanceId | [0]' \\
+						--output text)"
+					[[ "$instance_id" == i-* ]] || { echo "No running EC2 instance found at the configured public IP in AWS_REGION." >&2; exit 1; }
+
+					scp -F "$DEPLOY_TEMP/ec2_ssh_config" \\
+						"$DEPLOY_TEMP/galactic-field-guide.tar.gz" \\
+						"ec2-deploy:/tmp/galactic-field-guide-${IMAGE_TAG}.tar.gz"
+
+					ssh -F "$DEPLOY_TEMP/ec2_ssh_config" ec2-deploy bash -s -- "$IMAGE_TAG" "$APP_PORT" <<'REMOTE'
+					set -Eeuo pipefail
+					image_tag="$1"
+					app_port="$2"
+					image_ref="galactic-field-guide:${image_tag}"
+					archive="/tmp/galactic-field-guide-${image_tag}.tar.gz"
+					container_name="galactic-field-guide"
+					trap 'rm -f "$archive"' EXIT
+
+					docker load --input "$archive"
+					docker rm --force "$container_name" >/dev/null 2>&1 || true
+					docker run --detach --restart unless-stopped \\
+						--name "$container_name" \\
+						--publish "${app_port}:80" \\
+						"$image_ref"
+
+					for attempt in {1..10}; do
+						if docker exec "$container_name" wget -q -O /dev/null http://127.0.0.1/starships; then
+							break
+						fi
+						if [[ "$attempt" -eq 10 ]]; then
+							docker logs "$container_name"
+							exit 1
+						fi
+						sleep 2
+					done
+
+					current_image_id="$(docker image inspect --format '{{.Id}}' "$image_ref")"
+					docker image ls --no-trunc --format '{{.Repository}}:{{.Tag}} {{.ID}}' \\
+						| awk -v current="$current_image_id" '$1 ~ /^galactic-field-guide:/ && $2 != current { print $2 }' \\
+						| sort -u \\
+						| while IFS= read -r stale_image_id; do
+							[[ -z "$stale_image_id" ]] || docker image rm "$stale_image_id" || true
+						  done
+					REMOTE
+
+					echo "URL for service http://${EC2_INSTANCE_PUBLIC_IP}:${APP_PORT}"
+					'''.stripIndent().trim()
+			}
+		}
+	}
+
+	post {
+		always {
+			sh '''
+				#!/usr/bin/env bash
+				set -euo pipefail
+				if [[ -n "${DEPLOY_TEMP:-}" && -d "$DEPLOY_TEMP" ]]; then
+					rm -rf -- "$DEPLOY_TEMP"
+				fi
+				rm -f -- "$WORKSPACE/galactic-field-guide.tar.gz"
+				'''.stripIndent().trim()
+		}
+	}
+}
