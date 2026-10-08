@@ -53,6 +53,8 @@ The instance must have Docker installed and running, and its security group must
 
 The pipeline uses the agent's existing NVM installation rather than a Jenkins tool. `NPM_PATH` is `/home/wasadmin/.nvm/versions/node/v20.15.0/bin/npm`, and the corresponding `bin` directory is prepended to PATH so npm can find its Node.js runtime. The Jenkins agent user must have permission to traverse this directory and execute both binaries. No NodeJS plugin or Jenkins NodeJS tool installation is required. The Build stage prints both versions before building the Docker image. The app's dependency installation and production build still run inside Docker using the Dockerfile's Node.js 22 image.
 
+Before `docker build`, the pipeline removes `package-lock.json` from the application checkout and recreates it with `npm install --package-lock-only --ignore-scripts`. This requires access to the configured npm registry and does not install dependencies or run lifecycle scripts on the agent. Docker's `npm ci` uses the regenerated lockfile. Regeneration can select newer versions within the ranges in `package.json`, so separate builds of the same commit may resolve different dependencies. The pipeline does not commit the generated lockfile.
+
 Create these Jenkins credentials, using the exact IDs below:
 
 - `AWS_ACCESS_KEY_ID`: **Secret text** containing the AWS access key ID.

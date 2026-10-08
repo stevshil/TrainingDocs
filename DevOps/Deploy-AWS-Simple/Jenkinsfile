@@ -41,6 +41,8 @@ pipeline {
 					set -euo pipefail
 					node --version
 					"$NPM_PATH" --version
+					rm -f -- package-lock.json
+					"$NPM_PATH" install --package-lock-only --ignore-scripts
 					image_ref="galactic-field-guide:${IMAGE_TAG}"
 					docker build --tag "$image_ref" .
 					docker save "$image_ref" | gzip -1 > "$DEPLOY_TEMP/galactic-field-guide.tar.gz"
