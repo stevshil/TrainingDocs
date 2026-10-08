@@ -59,7 +59,7 @@ Create these Jenkins credentials, using the exact IDs below:
 
 The AWS credentials need permission to describe instances, subnets, security groups, and key pairs, and to run, tag, and start EC2 instances. Scope these permissions to the intended deployment resources where possible.
 
-Supply `AWS_REGION`, `AMI_ID`, `KEY_PAIR_NAME`, `VPC_ID`, `SUBNET_ID`, and `SECGRP_ID` as build parameters. `EC2_SSH_USER` defaults to `ec2-user`, and `APP_PORT` defaults to `80`. `BUILD_CONTEXT` defaults to `.` for a checkout rooted at this app; when checking out the entire TrainingDocs repository, set it to `DevOps/Deploy-AWS-Simple`.
+Supply `AWS_REGION`, `AMI_ID`, `KEY_PAIR_NAME`, `VPC_ID`, `SUBNET_ID`, and `SECGRP_ID` as build parameters. `EC2_SSH_USER` defaults to `ec2-user`, and `APP_PORT` defaults to `80`. Configure the job to check out the entire TrainingDocs repository and use `DevOps/Deploy-AWS-Simple/Jenkinsfile` as its Script Path. SCM checkout runs at the repository root; all subsequent application steps, including artifact archiving and cleanup, run inside `dir('DevOps/Deploy-AWS-Simple')`. Docker builds from `.` in that directory; no build-context parameter is needed. Commands sent over SSH still run on EC2.
 
 Start the job manually with **Build with Parameters**. The pipeline builds a commit-tagged image, archives its compressed image with one-day artifact retention, finds or creates the instance named `Frontend`, and installs Docker before deploying. Provisioning and deployment have 35-minute and 15-minute timeouts respectively. All stages share one agent and its temporary image archive; the discovered public IP is passed through the pipeline environment. Temporary local deployment files are removed in `post { always { ... } }`.
 
