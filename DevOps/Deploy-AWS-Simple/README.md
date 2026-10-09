@@ -59,7 +59,7 @@ Create these Jenkins credentials, using the exact IDs below:
 
 - `AWS_ACCESS_KEY_ID`: **Secret text** containing the AWS access key ID.
 - `AWS_SECRET_ACCESS_KEY`: **Secret text** containing the AWS secret access key.
-- `SSH_KEY`: **Secret file** containing the unencrypted private SSH key matching `KEY_PAIR_NAME`.
+- `SSH_KEY`: **Secret text** containing the complete multiline, unencrypted private SSH key matching `KEY_PAIR_NAME`. The pipeline writes it to a temporary file with mode `600` and removes it during cleanup.
 
 The AWS credentials need permission to describe instances, subnets, security groups, and key pairs, and to run, tag, and start EC2 instances. Scope these permissions to the intended deployment resources where possible.
 

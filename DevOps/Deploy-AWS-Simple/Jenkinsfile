@@ -60,7 +60,7 @@ pipeline {
 			environment {
 				AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
 				AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-				SSH_KEY_FILE = credentials('SSH_KEY')
+				SSH_PRIVATE_KEY = credentials('SSH_KEY')
 			}
 			steps {
 				dir('DevOps/Deploy-AWS-Simple') {
@@ -76,7 +76,12 @@ pipeline {
 					[[ "$SUBNET_ID" =~ ^subnet-[[:alnum:]]+$ ]] || { echo "SUBNET_ID must be a valid subnet identifier." >&2; exit 1; }
 					[[ "$SECGRP_ID" =~ ^sg-([0-9a-f]{8}|[0-9a-f]{17})$ ]] || { echo "SECGRP_ID must be a valid security group identifier." >&2; exit 1; }
 					[[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
-					[[ -s "$SSH_KEY_FILE" ]] || { echo "The SSH_KEY file credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
+					set +x
+					[[ -n "$SSH_PRIVATE_KEY" ]] || { echo "The SSH_KEY secret text credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
+					umask 077
+					printf '%s\\n' "$SSH_PRIVATE_KEY" > "$DEPLOY_TEMP/ec2_deploy_key"
+					chmod 600 "$DEPLOY_TEMP/ec2_deploy_key"
+					ssh-keygen -y -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null
 
 					aws ec2 describe-instances \\
 						--filters "Name=tag:Name,Values=Frontend" \\
@@ -165,7 +170,6 @@ pipeline {
 					sh '''
 					#!/usr/bin/env bash
 					set -euo pipefail
-					install -m 600 "$SSH_KEY_FILE" "$DEPLOY_TEMP/ec2_deploy_key"
 					cat > "$DEPLOY_TEMP/ec2_ssh_config" <<EOF
 					Host ec2-deploy
 					  HostName ${EC2_INSTANCE_PUBLIC_IP}
@@ -179,7 +183,6 @@ pipeline {
 					  BatchMode yes
 					EOF
 					chmod 600 "$DEPLOY_TEMP/ec2_ssh_config"
-					ssh-keygen -y -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null
 
 					for attempt in {0..3}; do
 						if ssh -F "$DEPLOY_TEMP/ec2_ssh_config" ec2-deploy true; then
