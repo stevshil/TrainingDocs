@@ -60,11 +60,11 @@ pipeline {
 			environment {
 				AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
 				AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-				SSH_PRIVATE_KEY = credentials('SSH_KEY')
 			}
 			steps {
 				dir('DevOps/Deploy-AWS-Simple') {
-					sh '''
+					withCredentials([sshUserPrivateKey(credentialsId: 'SSH_KEY', keyFileVariable: 'SSH_KEY_FILE')]) {
+						sh '''
 					#!/usr/bin/env bash
 					set -euo pipefail
 					[[ -n "$AWS_REGION" && -n "$AMI_ID" && -n "$KEY_PAIR_NAME" && -n "$VPC_ID" && -n "$SUBNET_ID" && -n "$SECGRP_ID" ]] || {
@@ -77,12 +77,13 @@ pipeline {
 					[[ "$SECGRP_ID" =~ ^sg-([0-9a-f]{8}|[0-9a-f]{17})$ ]] || { echo "SECGRP_ID must be a valid security group identifier." >&2; exit 1; }
 					[[ "$EC2_SSH_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo "EC2_SSH_USER contains unsupported characters." >&2; exit 1; }
 					set +x
-					[[ -n "$SSH_PRIVATE_KEY" ]] || { echo "The SSH_KEY secret text credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
+					[[ -s "$SSH_KEY_FILE" ]] || { echo "The SSH_KEY SSH Username with private key credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
 					umask 077
-					printf '%s\\n' "$SSH_PRIVATE_KEY" | tr -d '\\r' > "$DEPLOY_TEMP/ec2_deploy_key"
+					tr -d '\\r' < "$SSH_KEY_FILE" > "$DEPLOY_TEMP/ec2_deploy_key"
+					printf '\\n' >> "$DEPLOY_TEMP/ec2_deploy_key"
 					chmod 600 "$DEPLOY_TEMP/ec2_deploy_key"
 					if ! ssh-keygen -y -P '' -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null; then
-						echo "SSH_KEY must contain a complete, unencrypted private key with BEGIN/END lines and actual line breaks, not literal backslash-n sequences. Replace the Jenkins Secret text with the original private key contents." >&2
+						echo "SSH_KEY must be an SSH Username with private key credential containing a complete, unencrypted private key with BEGIN/END lines and actual line breaks. Replace its private key with the original key contents." >&2
 						exit 1
 					fi
 
@@ -166,7 +167,8 @@ pipeline {
 					done
 					printf '%s\\n' "$public_ip" > "$DEPLOY_TEMP/public-ip"
 					echo "Instance has IP of $public_ip"
-					'''.stripIndent().trim()
+						'''.stripIndent().trim()
+					}
 					script {
 						env.EC2_INSTANCE_PUBLIC_IP = readFile("${env.DEPLOY_TEMP}/public-ip").trim()
 					}
