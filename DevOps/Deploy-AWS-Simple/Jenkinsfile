@@ -79,9 +79,12 @@ pipeline {
 					set +x
 					[[ -n "$SSH_PRIVATE_KEY" ]] || { echo "The SSH_KEY secret text credential is required and must match KEY_PAIR_NAME." >&2; exit 1; }
 					umask 077
-					printf '%s\\n' "$SSH_PRIVATE_KEY" > "$DEPLOY_TEMP/ec2_deploy_key"
+					printf '%s\\n' "$SSH_PRIVATE_KEY" | tr -d '\\r' > "$DEPLOY_TEMP/ec2_deploy_key"
 					chmod 600 "$DEPLOY_TEMP/ec2_deploy_key"
-					ssh-keygen -y -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null
+					if ! ssh-keygen -y -P '' -f "$DEPLOY_TEMP/ec2_deploy_key" > /dev/null; then
+						echo "SSH_KEY must contain a complete, unencrypted private key with BEGIN/END lines and actual line breaks, not literal backslash-n sequences. Replace the Jenkins Secret text with the original private key contents." >&2
+						exit 1
+					fi
 
 					aws ec2 describe-instances \\
 						--filters "Name=tag:Name,Values=Frontend" \\
